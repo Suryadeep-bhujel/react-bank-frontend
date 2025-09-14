@@ -1,0 +1,42 @@
+{
+  "name": "test-react-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "generate:auth": "npx openapi-generator-cli generate -i http://localhost:3000/api/openapi.json -g typescript-fetch -o src/api --additional-properties=useSingleRequestParameter=true,supportsES6=true,withSeparateModelsAndApi=true",
+    "generate:api": "npx openapi-typescript-codegen --input http://localhost:3000/api-docs-json --output ./src/openapi-request --client fetch --useOptions --useUnionTypes --exportServices true"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@tailwindcss/vite": "^4.1.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.6.0",
+    "react-toastify": "^11.0.5",
+    "swagger-ui": "^5.22.0",
+    "swagger-ui-react": "^5.22.0",
+    "tailwindcss": "^4.1.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@openapitools/openapi-generator-cli": "^2.20.2",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "openapi-typescript-codegen": "^0.29.0",
+    "path": "^0.12.7",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.30.1",
+    "vite": "^6.3.5"
+  }
+}

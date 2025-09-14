@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+.loader-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0 auto;
+    vertical-align: middle;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    z-index: 999999999999;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+div#default-modal {
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: rgba(1, 2, 1, 0.5);
+}
