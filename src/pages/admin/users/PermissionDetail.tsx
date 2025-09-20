@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { PermissionOfRole } from "@states/RolePermissionState"
 import { PermissionState } from "@states/PermissionState";
 const PermissionDetail: React.FC = () => {
-    const { roleDetail, updateSelectedPermission, checkIfSelected, selectAllItems, selectGroupItems, savePermissions, selectedPermissions } = PermissionOfRole()
+    const { roleDetail, updateSelectedPermission, checkIfSelected, selectAllItems, selectGroupItems, savePermissions, selectedPermissions,updateRoleDetail } = PermissionOfRole()
     const { permissionGroupedList , permissionCount } = PermissionState()
 
     return (
@@ -28,8 +28,10 @@ const PermissionDetail: React.FC = () => {
                     <input
                         type="text"
                         id="RoleName"
-                        value={roleDetail.name}
-                        
+                        value={roleDetail?.name}
+                        onChange={(e) =>
+                            updateRoleDetail(() => ({name: e.target.value }))
+                        }
                         className="form-input mt-2 mb-2 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     />
                     

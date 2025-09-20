@@ -228,13 +228,24 @@ export const PermissionOfRole = () => {
         // console.log("roleDetailroleDetail", roleDetail)
         setIsLoading(true)
         try {
-            const { message } = await RoleService.updatePermissionOfRole({ oid: roleDetail._oid, requestBody: { permissionNames: Array.from(selectedPermissions) } })
+            let message = ''
+            if(roleDetail?._oid){
+                const response = await RoleService.updatePermissionOfRole({ oid: roleDetail._oid, requestBody: { permissionNames: Array.from(selectedPermissions) } })
+               message = response?.message
+            }else {
+                console.log("roleDetailroleDetailroleDetail", roleDetail)
+               const response = await RoleService.create({ requestBody: {name: roleDetail?.name, permissionNames: Array.from(selectedPermissions) } })
+               message =  typeof response === 'object' ?  response?.message : 'Role added successfully.'
+            }
             toast.success(message);
         } catch (error) {
             toast.error(error?.message);
             console.log("error is ", error?.message)
         }
         setIsLoading(false)
+    }
+    const updateRoleDetail = (detail: Partial<T>) => {
+        setRoleDetail((prev) => ({ ...prev, ...detail }))
     }
     return {
         getRoleDetail,
@@ -245,7 +256,8 @@ export const PermissionOfRole = () => {
         checkIfSelected,
         selectGroupItems,
         selectAllItems,
-        savePermissions
+        savePermissions,
+        updateRoleDetail
 
     }
 }

@@ -19,6 +19,7 @@ import { LoadingProvider, useLoading } from "@context/LoadingContext";
 import PermissionDetail from "@src/pages/admin/users/PermissionDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Countries from "./pages/admin/countries/Countries";
 
 const Home: React.FC = () => {
     // const [count, setCount] = useState(0);
@@ -102,6 +103,7 @@ const App: React.FC = () => {
                                 <Route path="my-profile" element={<MyProfile />} />
                                 <Route path="customer-list" element={<CustomerList />} />
                                 <Route path="customer-applications" element={<CustomerApplicationList />} />
+                                <Route path="country-list" element={<Countries />} />
                             </Route>
                         </Routes>
                     </Router>

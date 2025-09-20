@@ -3,10 +3,21 @@ import { Link } from "react-router-dom";
 import { CustomerState } from "@states/CustomerState"
 import Pagination from "@shared/Pagination";
 import DialogModal from "@shared/DialogModal";
+import { useDialogueState } from "@states/useDialogueState";
 const CustomerList: React.FC = () => {
-    const { customerList, handlePageChange, search, isLoading, handlePageSizeChange } = CustomerState()
+    const { customerList, handlePageChange, search, isLoading, handlePageSizeChange, customerStructure, customer, setIsLoading, saveCustomer } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
-    const [isDialogOpen, setIsDialogOpen] = useState<Boolean>(false)
+    const { isDialogOpen, setIsDialogOpen } = useDialogueState();
+    const handCusomterformSubmit = (data: any) => {
+        console.log("saving customer data", data)
+        saveCustomer(data).then((res) => {
+            console.log("response after saving customer", res);
+            
+            if (res) {
+                setIsDialogOpen(false);
+            }
+        });
+    }
     // const [loading, setLoading] = useState(true);
     // useEffect(() => {
     //     // getCustomersList();
@@ -16,16 +27,16 @@ const CustomerList: React.FC = () => {
             <div className="">
                 <div className="text-lg font-semibold text-gray-700 mb-4 flex justify-between">
                     <h1 className="text-2xl font-bold text-cyan-900 mb-4">Customers List</h1>
-                    <button  onClick={()=> {
+                    <button onClick={() => {
                         setIsDialogOpen(true)
                     }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
-                            Add Customer
-                        </button>
+                        Add Customer
+                    </button>
                     <div className="text-gray-500 justify-end">
                         <Link to="add-customer" className="bg-sky-900 text-white px-4 py-2 rounded">
                             Add Customer
                         </Link>
-                        
+
                     </div>
                 </div>
 
@@ -33,8 +44,9 @@ const CustomerList: React.FC = () => {
 
 
 
-
-                <DialogModal isDialogOpen={isDialogOpen}></DialogModal>
+                {isDialogOpen && (
+                    <DialogModal formInputs={customer} formStructure={customerStructure} dialogType="add" dialogTitle="Add Customer" isDialogOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} onSave={(data) => handCusomterformSubmit(data)}></DialogModal>
+                )}
 
                 {/* content Area */}
                 {/* <pre>{JSON.stringify(customerList, null, 2)}</pre> */}

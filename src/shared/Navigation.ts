@@ -61,5 +61,12 @@ export const navigationList : RouteType[] = [
         title: "Applications",
         leftIcon: "",
         rightIcon : "",
+    },
+    {
+        path: "/country-list",
+        name: "country-list",
+        title: "Countries",
+        leftIcon: "",
+        rightIcon : "",
     }
 ]
