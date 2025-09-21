@@ -3,7 +3,7 @@ import { CustomerService } from "@openapi/CustomerService";
 import { useLoading } from "@context/LoadingContext";
 import type { CreateCustomerDto } from "@src/openapi-request";
 import dayjs from "dayjs";
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 export interface Search {
     fieldName?: string;
     fieldValue?: string;
@@ -24,6 +24,7 @@ export interface AddedByInterface {
 }
 export interface CustomerInterface {
     id?: number | null;
+    _oid?: string;
     firstName?: string;
     middleName?: string;
     lastName?: string;
@@ -37,6 +38,7 @@ export interface CustomerInterface {
 export const CustomerState = () => {
     const { setIsLoading, isLoading } = useLoading();
     const [customerList, setCusomterList] = useState<CustomerInterface[]>([])
+    const [dialogTitle, setDialogTitle] = useState("Add Customer");
     // const [isLoading, setIsLoading] = useState<Boolean>(true)
     const resetCustomerForm: CustomerInterface = {
         id: null,
@@ -47,7 +49,7 @@ export const CustomerState = () => {
         phoneNumber: '',
         dateOfBirth: ''
     }
-    const [customer, setCustomer] = useState<CustomerInterface | null>(resetCustomerForm)
+    const [customer, setCustomerForm] = useState<CustomerInterface | null>(resetCustomerForm)
     const customerStructure = [
         { label: "First Name", fieldName: "firstName", dataType: "text", required: true },
         { label: "Middle Name", fieldName: "middleName", dataType: "text", required: false },
@@ -108,14 +110,22 @@ export const CustomerState = () => {
         try {
             setIsLoading(true);
             data.dateOfBirth = dayjs(data?.dateOfBirth).format("DD-MM-YYYY");
-            const response = await CustomerService.create({ requestBody: data as CreateCustomerDto });
-            console.log("customer created successfully", response);
-            // Reset the form after successful creation
-            setCustomer(resetCustomerForm);
-            // Optionally, refresh the customer list or update state here
-            await getCustomersList();
+            let response;
+            if (data?._oid) {
+                // Update existing customer
+                response = await CustomerService.update({ oid: data?._oid, requestBody: data as CreateCustomerDto });
+                // Reset the form after successful update
+                toast.success("Customer updated successfully!");
+                setCustomerForm(resetCustomerForm);
+            } else {
+                response = await CustomerService.create({ requestBody: data as CreateCustomerDto });
+                // Reset the form after successful creation
+                setCustomerForm(resetCustomerForm);
+                // Optionally, refresh the customer list or update state here
+                toast.success("Customer created successfully!");    
+            }
             setIsLoading(false);
-            toast.success("Customer created successfully!");
+            await getCustomersList();
             return response;
         } catch (error) {
             console.error("Error creating customer:", error.message);
@@ -133,10 +143,12 @@ export const CustomerState = () => {
         search,
         isLoading,
         customer,
-        setCustomer,
+        setCustomerForm,
         customerStructure,
         setIsLoading,
         saveCustomer,
-        resetCustomerForm
+        resetCustomerForm,
+        dialogTitle,
+        setDialogTitle
     }
 }

@@ -2,8 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type UpdateRoleDto = {
-    name?: string;
-    permissionNames?: Array<string>;
+export type UserRolesRequestDto = {
+    roles: Array<string>;
 };
 

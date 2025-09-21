@@ -3,13 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type CreateRoleDto = {
-    /**
-     * Role name
-     */
     name: string;
-    /**
-     * List of permission names to be assigned to the role
-     */
-    permissionNames?: Array<string>;
+    permissionNames: Array<string>;
 };
 

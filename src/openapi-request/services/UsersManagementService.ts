@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { CommonListReponse } from '../models/CommonListReponse';
 import type { UpdateUserDto } from '../models/UpdateUserDto';
+import type { UserRolesRequestDto } from '../models/UserRolesRequestDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -38,6 +39,27 @@ export class UsersManagementService {
                 'sortBy': sortBy,
                 'sortOrder': sortOrder,
             },
+        });
+    }
+    /**
+     * @returns any
+     * @throws ApiError
+     */
+    public static assignUserRole({
+        userOid,
+        requestBody,
+    }: {
+        userOid: string,
+        requestBody: UserRolesRequestDto,
+    }): CancelablePromise<Record<string, any>> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/users/assign-role/{userOid}',
+            path: {
+                'userOid': userOid,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**

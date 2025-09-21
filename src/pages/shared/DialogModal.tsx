@@ -20,10 +20,19 @@ const DialogModal: React.FC<Props> = ({
     formInputs
 }) => {
     console.log("isDialogOpenisDialogOpenisDialogOpen--->", isDialogOpen)
+    const [localForm, setLocalForm] = useState<Record<string, any>>({});
+    useEffect(() => {
+        // create a shallow clone so edits in modal don't mutate parent's object
+        setLocalForm(formInputs ? { ...formInputs } : {});
+    }, [formInputs]);
     const submitFormData = () => {
-        console.log("formInputs--->", formInputs)
-        onSave(formInputs);
+        console.log("formInputs--->", localForm)
+        onSave(localForm);
     }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setLocalForm(prev => ({ ...prev, [name]: value }));
+    };
     return (
         <>
             {isDialogOpen && (
@@ -48,7 +57,7 @@ const DialogModal: React.FC<Props> = ({
                                     {formStructure.map((field) => (
                                         <div key={field.fieldName}>
                                             <label htmlFor={field.fieldName} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{field.label}</label>
-                                            <input type={field.dataType} name={field.fieldName} onChange={(e) => formInputs[field.fieldName] = e.target.value} id={field.fieldName} required={field.required} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label.toLowerCase()}`} />
+                                            <input type={field.dataType} name={field.fieldName} onChange={handleInputChange} id={field.fieldName} required={field.required} value={localForm[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label.toLowerCase()}`} />
                                         </div>
                                     ))}
                                     <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">

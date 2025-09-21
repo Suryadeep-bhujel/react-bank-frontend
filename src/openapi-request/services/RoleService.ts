@@ -12,14 +12,14 @@ import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 export class RoleService {
     /**
-     * @returns string
+     * @returns any
      * @throws ApiError
      */
     public static create({
         requestBody,
     }: {
         requestBody: CreateRoleDto,
-    }): CancelablePromise<string> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/role',

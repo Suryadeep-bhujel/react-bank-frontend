@@ -38,6 +38,7 @@ export type { UpdateRoleDto } from './models/UpdateRoleDto';
 export type { UpdateRoleHasPermissionDto } from './models/UpdateRoleHasPermissionDto';
 export type { UpdateStaffDto } from './models/UpdateStaffDto';
 export type { UpdateUserDto } from './models/UpdateUserDto';
+export type { UserRolesRequestDto } from './models/UserRolesRequestDto';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';

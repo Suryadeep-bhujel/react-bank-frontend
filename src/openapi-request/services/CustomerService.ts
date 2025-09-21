@@ -58,57 +58,57 @@ export class CustomerService {
         });
     }
     /**
-     * @returns string
+     * @returns any
      * @throws ApiError
      */
     public static findOne({
-        id,
+        oid,
     }: {
-        id: string,
-    }): CancelablePromise<string> {
+        oid: string,
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/customers/{id}',
+            url: '/api/customers/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
         });
     }
     /**
-     * @returns string
+     * @returns any
      * @throws ApiError
      */
     public static update({
-        id,
+        oid,
         requestBody,
     }: {
-        id: string,
+        oid: string,
         requestBody: UpdateCustomerDto,
-    }): CancelablePromise<string> {
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/customers/{id}',
+            url: '/api/customers/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
             body: requestBody,
             mediaType: 'application/json',
         });
     }
     /**
-     * @returns string
+     * @returns any
      * @throws ApiError
      */
     public static remove({
-        id,
+        oid,
     }: {
-        id: string,
-    }): CancelablePromise<string> {
+        oid: string,
+    }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/customers/{id}',
+            url: '/api/customers/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
         });
     }
