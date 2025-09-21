@@ -4,6 +4,7 @@ import { useLoading } from "@context/LoadingContext";
 import type { CreateCustomerDto } from "@src/openapi-request";
 import dayjs from "dayjs";
 import { toast } from 'react-toastify';
+import type { FormStructure } from "@src/shared/SharedInterface";
 export interface Search {
     fieldName?: string;
     fieldValue?: string;
@@ -35,12 +36,7 @@ export interface CustomerInterface {
     updatedAt?: string;
     addedBy?: AddedByInterface | null;
 }
-export interface FormStructure {
-    label: string;
-    fieldName: string;
-    dataType: string;
-    required: boolean;
-}
+
 export const CustomerState = () => {
     const { setIsLoading, isLoading } = useLoading();
     const [customerList, setCusomterList] = useState<CustomerInterface[]>([])
@@ -78,7 +74,7 @@ export const CustomerState = () => {
     });
     useEffect(() => {
         getCustomersList();
-    }, [search.currentPage, search.limit]);
+    }, [search.currentPage, search.limit, search.fieldValue]);
     const getCustomersList = async () => {
         const { data: response } = await CustomerService.findAll(search)
         setCusomterList(response?.data);
@@ -150,6 +146,16 @@ export const CustomerState = () => {
             // alert(error?.message || "Failed to create customer. Please try again.");
         }
     }
+    const handleSearch = (fieldName: string, fieldValue: string) => {
+        console.log("Searching for", fieldName, fieldValue);
+        setSearchParams(prev => ({
+            ...prev,
+            fieldName,
+            fieldValue,
+            page: 1,
+            currentPage: 1
+        }));
+    }
     return {
         getCustomersList,
         handlePageChange,
@@ -166,6 +172,7 @@ export const CustomerState = () => {
         dialogTitle,
         setDialogTitle,
         errors,
-        setErrors
+        setErrors,
+        handleSearch
     }
 }

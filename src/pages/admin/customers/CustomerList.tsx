@@ -4,24 +4,26 @@ import { CustomerState, type CustomerInterface } from "@states/CustomerState"
 import Pagination from "@shared/Pagination";
 import DialogModal from "@shared/DialogModal";
 import { useDialogueState } from "@states/useDialogueState";
+import SearchWidget from "@src/pages/shared/SearchWidget";
 const CustomerList: React.FC = () => {
-    const { 
-        customerList, 
-        handlePageChange, 
-        search, 
-        isLoading, 
-        handlePageSizeChange, 
-        customerStructure, 
-        customer, 
-        setIsLoading, 
-        saveCustomer, 
-        resetCustomerForm, 
+    const {
+        customerList,
+        handlePageChange,
+        search,
+        isLoading,
+        handlePageSizeChange,
+        customerStructure,
+        customer,
+        setIsLoading,
+        saveCustomer,
+        resetCustomerForm,
         setCustomerForm,
         dialogTitle,
         setDialogTitle,
         errors,
-        setErrors
-        
+        setErrors,
+        handleSearch
+
     } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
     const { isDialogOpen, setIsDialogOpen } = useDialogueState();
@@ -58,10 +60,7 @@ const CustomerList: React.FC = () => {
             setIsDialogOpen(true);
         }
     }
-    // const [loading, setLoading] = useState(true);
-    // useEffect(() => {
-    //     // getCustomersList();
-    // }, [])
+
     return (
         <>
             <div className="">
@@ -79,21 +78,25 @@ const CustomerList: React.FC = () => {
 
                     </div> */}
                 </div>
+                <SearchWidget
+                    fields={customerStructure}
+                    onSearch={(fieldName, fieldValue) => handleSearch(fieldName, fieldValue)}
+                />
 
 
 
 
 
                 {isDialogOpen && (
-                    <DialogModal 
-                    formInputs={customerForm} 
-                    formStructure={customerStructure} 
-                    dialogType={dialogType} 
-                    dialogTitle={dialogTitle} 
-                    isDialogOpen={isDialogOpen} 
-                    onClose={() => setIsDialogOpen(false)} 
-                    onSave={(data) => handCusomterformSubmit(data)}
-                    formErrors={errors}
+                    <DialogModal
+                        formInputs={customerForm}
+                        formStructure={customerStructure}
+                        dialogType={dialogType}
+                        dialogTitle={dialogTitle}
+                        isDialogOpen={isDialogOpen}
+                        onClose={() => setIsDialogOpen(false)}
+                        onSave={(data) => handCusomterformSubmit(data)}
+                        formErrors={errors}
                     ></DialogModal>
                 )}
 
