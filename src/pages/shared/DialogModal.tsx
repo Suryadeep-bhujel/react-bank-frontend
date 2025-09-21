@@ -9,6 +9,7 @@ type Props = {
     dialogTitle?: string;
     formStructure?: any;
     formInputs?: any;
+    formErrors?: any;
 };
 const DialogModal: React.FC<Props> = ({
     isDialogOpen,
@@ -17,7 +18,8 @@ const DialogModal: React.FC<Props> = ({
     dialogType,
     dialogTitle,
     formStructure,
-    formInputs
+    formInputs,
+    formErrors
 }) => {
     console.log("isDialogOpenisDialogOpenisDialogOpen--->", isDialogOpen)
     const [localForm, setLocalForm] = useState<Record<string, any>>({});
@@ -53,16 +55,25 @@ const DialogModal: React.FC<Props> = ({
                             </div>
 
                             <div className="p-4 md:p-5 space-y-4">
+                                {formErrors && Object.keys(formErrors).length > 0 && (
+                                    <div className="mb-4">
+                                        <ul className="list-disc list-inside text-sm text-red-600">
+                                            {Object.entries(formErrors).map(([field, errorMsg]) => (
+                                                <li key={field}>{errorMsg}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <form className="space-y-4" action="#" method="POST" onSubmit={(e) => { e.preventDefault(); submitFormData() }}>
                                     {formStructure.map((field) => (
                                         <div key={field.fieldName}>
                                             <label htmlFor={field.fieldName} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{field.label}</label>
-                                            <input type={field.dataType} name={field.fieldName} onChange={handleInputChange} id={field.fieldName} required={field.required} value={localForm[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label.toLowerCase()}`} />
+                                            <input type={field.dataType} name={field.fieldName} onChange={handleInputChange} id={field.fieldName} value={localForm[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label.toLowerCase()}`} />
                                         </div>
                                     ))}
                                     <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                                         <button data-modal-hide="default-modal" type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
-                                        <button data-modal-hide="default-modal" type="button" className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+                                        <button data-modal-hide="default-modal" type="button" className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={onClose}>Cancel</button>
                                     </div>
                                 </form>
                             </div>

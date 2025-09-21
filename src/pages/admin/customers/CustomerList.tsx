@@ -18,7 +18,9 @@ const CustomerList: React.FC = () => {
         resetCustomerForm, 
         setCustomerForm,
         dialogTitle,
-        setDialogTitle
+        setDialogTitle,
+        errors,
+        setErrors
         
     } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
@@ -31,16 +33,25 @@ const CustomerList: React.FC = () => {
             console.log("response after saving customer", res);
             customerForm = resetCustomerForm;
             console.log("resresresresres", res.message)
-            if (res) {
+            if (res.success) {
                 setIsDialogOpen(false);
             }
         });
+    }
+    const openAddCustomerModal = () => {
+        setDialogTitle("Add Customer")
+        customerForm = { ...resetCustomerForm };
+        setCustomerForm({ ...resetCustomerForm });
+        dialogType = "add";
+        setIsDialogOpen(true);
+        setErrors("")
     }
     const handleEditCustomer = (customerOid: string) => {
         let customerRecord = customerList.find((customerItem) => customerItem?._oid === customerOid);
         if (customerRecord) {
             customerRecord.dateOfBirth = customerRecord?.dateOfBirth?.split("T")?.[0];
             customerForm = customerRecord;
+            setErrors("")
             setCustomerForm({ ...customerRecord });
             dialogType = "edit";
             setDialogTitle("Edit Customer");
@@ -57,9 +68,7 @@ const CustomerList: React.FC = () => {
                 <div className="text-lg font-semibold text-gray-700 mb-4 flex justify-between">
                     <h1 className="text-2xl font-bold text-cyan-900 mb-4">Customers List</h1>
                     <button onClick={() => {
-                        setDialogTitle("Add Customer")
-                        setCustomerForm({ ...resetCustomerForm });
-                        setIsDialogOpen(true)
+                        openAddCustomerModal();
                     }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
                         Add Customer
                     </button>
@@ -76,7 +85,16 @@ const CustomerList: React.FC = () => {
 
 
                 {isDialogOpen && (
-                    <DialogModal formInputs={customerForm} formStructure={customerStructure} dialogType={dialogType} dialogTitle={dialogTitle} isDialogOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} onSave={(data) => handCusomterformSubmit(data)}></DialogModal>
+                    <DialogModal 
+                    formInputs={customerForm} 
+                    formStructure={customerStructure} 
+                    dialogType={dialogType} 
+                    dialogTitle={dialogTitle} 
+                    isDialogOpen={isDialogOpen} 
+                    onClose={() => setIsDialogOpen(false)} 
+                    onSave={(data) => handCusomterformSubmit(data)}
+                    formErrors={errors}
+                    ></DialogModal>
                 )}
 
                 {/* content Area */}

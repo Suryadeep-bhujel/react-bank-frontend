@@ -35,10 +35,17 @@ export interface CustomerInterface {
     updatedAt?: string;
     addedBy?: AddedByInterface | null;
 }
+export interface FormStructure {
+    label: string;
+    fieldName: string;
+    dataType: string;
+    required: boolean;
+}
 export const CustomerState = () => {
     const { setIsLoading, isLoading } = useLoading();
     const [customerList, setCusomterList] = useState<CustomerInterface[]>([])
     const [dialogTitle, setDialogTitle] = useState("Add Customer");
+    const [errors, setErrors] = useState<Record<string, string>>({});
     // const [isLoading, setIsLoading] = useState<Boolean>(true)
     const resetCustomerForm: CustomerInterface = {
         id: null,
@@ -50,7 +57,7 @@ export const CustomerState = () => {
         dateOfBirth: ''
     }
     const [customer, setCustomerForm] = useState<CustomerInterface | null>(resetCustomerForm)
-    const customerStructure = [
+    const customerStructure: FormStructure[] = [
         { label: "First Name", fieldName: "firstName", dataType: "text", required: true },
         { label: "Middle Name", fieldName: "middleName", dataType: "text", required: false },
         { label: "Last Name", fieldName: "lastName", dataType: "text", required: true },
@@ -122,16 +129,24 @@ export const CustomerState = () => {
                 // Reset the form after successful creation
                 setCustomerForm(resetCustomerForm);
                 // Optionally, refresh the customer list or update state here
-                toast.success("Customer created successfully!");    
+                toast.success("Customer created successfully!");
             }
             setIsLoading(false);
             await getCustomersList();
-            return response;
+            return {
+                success: true,
+                message: response?.message || "Operation successful",
+                data: response
+            };
         } catch (error) {
-            console.error("Error creating customer:", error.message);
+            console.error("Error creating customer:", error?.body);
             setIsLoading(false);
             toast.error("Failed to create customer. Please try again.");
-            return error;
+            setErrors(error?.body?.message || error?.message || {});
+            return {
+                message: error?.body?.message ?? error.message,
+                success: false
+            };
             // alert(error?.message || "Failed to create customer. Please try again.");
         }
     }
@@ -149,6 +164,8 @@ export const CustomerState = () => {
         saveCustomer,
         resetCustomerForm,
         dialogTitle,
-        setDialogTitle
+        setDialogTitle,
+        errors,
+        setErrors
     }
 }
