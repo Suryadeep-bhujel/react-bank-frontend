@@ -3,6 +3,7 @@ import { CustomerService } from "@openapi/CustomerService";
 import { useLoading } from "@context/LoadingContext";
 import type { CreateCustomerDto } from "@src/openapi-request";
 import dayjs from "dayjs";
+import {  toast } from 'react-toastify';
 export interface Search {
     fieldName?: string;
     fieldValue?: string;
@@ -108,16 +109,19 @@ export const CustomerState = () => {
             setIsLoading(true);
             data.dateOfBirth = dayjs(data?.dateOfBirth).format("DD-MM-YYYY");
             const response = await CustomerService.create({ requestBody: data as CreateCustomerDto });
-            console.log("request body sent for creating customer", response);
             console.log("customer created successfully", response);
             // Reset the form after successful creation
             setCustomer(resetCustomerForm);
             // Optionally, refresh the customer list or update state here
             await getCustomersList();
             setIsLoading(false);
+            toast.success("Customer created successfully!");
+            return response;
         } catch (error) {
-            console.error("Error creating customer:", error);
+            console.error("Error creating customer:", error.message);
             setIsLoading(false);
+            toast.error("Failed to create customer. Please try again.");
+            return error;
             // alert(error?.message || "Failed to create customer. Please try again.");
         }
     }
@@ -132,6 +136,7 @@ export const CustomerState = () => {
         setCustomer,
         customerStructure,
         setIsLoading,
-        saveCustomer
+        saveCustomer,
+        resetCustomerForm
     }
 }

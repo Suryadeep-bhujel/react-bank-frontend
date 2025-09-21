@@ -76,6 +76,7 @@ const App: React.FC = () => {
             <LoadingProvider>
                 <Loader />
                 <Home></Home>
+                <ToastContainer />
                 <AuthProvider>
                     <Router>
                         <Routes>

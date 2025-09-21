@@ -5,14 +5,16 @@ import Pagination from "@shared/Pagination";
 import DialogModal from "@shared/DialogModal";
 import { useDialogueState } from "@states/useDialogueState";
 const CustomerList: React.FC = () => {
-    const { customerList, handlePageChange, search, isLoading, handlePageSizeChange, customerStructure, customer, setIsLoading, saveCustomer } = CustomerState()
+    const { customerList, handlePageChange, search, isLoading, handlePageSizeChange, customerStructure, customer, setIsLoading, saveCustomer, resetCustomerForm } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
     const { isDialogOpen, setIsDialogOpen } = useDialogueState();
+    let customerForm = customer;
     const handCusomterformSubmit = (data: any) => {
-        console.log("saving customer data", data)
+        // console.log("saving customer data", data)
         saveCustomer(data).then((res) => {
             console.log("response after saving customer", res);
-            
+            customerForm =  resetCustomerForm;
+            console.log("resresresresres", res.message)
             if (res) {
                 setIsDialogOpen(false);
             }
@@ -32,12 +34,12 @@ const CustomerList: React.FC = () => {
                     }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
                         Add Customer
                     </button>
-                    <div className="text-gray-500 justify-end">
+                    {/* <div className="text-gray-500 justify-end">
                         <Link to="add-customer" className="bg-sky-900 text-white px-4 py-2 rounded">
                             Add Customer
                         </Link>
 
-                    </div>
+                    </div> */}
                 </div>
 
 
@@ -45,7 +47,7 @@ const CustomerList: React.FC = () => {
 
 
                 {isDialogOpen && (
-                    <DialogModal formInputs={customer} formStructure={customerStructure} dialogType="add" dialogTitle="Add Customer" isDialogOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} onSave={(data) => handCusomterformSubmit(data)}></DialogModal>
+                    <DialogModal formInputs={customerForm} formStructure={customerStructure} dialogType="add" dialogTitle="Add Customer" isDialogOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} onSave={(data) => handCusomterformSubmit(data)}></DialogModal>
                 )}
 
                 {/* content Area */}
