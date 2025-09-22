@@ -20,6 +20,8 @@ import PermissionDetail from "@src/pages/admin/users/PermissionDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Countries from "./pages/admin/countries/Countries";
+import BankAccount from "@src/pages/admin/accounts/BankAccounts";
+import AddUpdateBankAccount from "@src/pages/admin/accounts/AddUpdateBankAccount";
 
 const Home: React.FC = () => {
     // const [count, setCount] = useState(0);
@@ -105,6 +107,9 @@ const App: React.FC = () => {
                                 <Route path="customer-list" element={<CustomerList />} />
                                 <Route path="customer-applications" element={<CustomerApplicationList />} />
                                 <Route path="country-list" element={<Countries />} />
+                                <Route path="accounts" element={<BankAccount />} />
+                                <Route path="accounts/add" element={<AddUpdateBankAccount />} />
+                                <Route path="account/edit/:_oid" element={<AddUpdateBankAccount />} />
                             </Route>
                         </Routes>
                     </Router>

@@ -24,6 +24,7 @@ export interface ColumnTypeInterface {
     name: string;
     fieldName: string;
     dataType: string;
+    required?: boolean;
 }
 export interface ListTableInterface {
     tableColumns: ColumnTypeInterface[];
@@ -73,6 +74,7 @@ export interface TableColumns{
     label?: string;
     dataType: string;
     actions?: { name: string; action: string; color: string; icon: string }[];
+    visible?: boolean;
 
 };
 export interface FormStructure {
@@ -80,4 +82,7 @@ export interface FormStructure {
     fieldName: string;
     dataType: string;
     required: boolean;
+    visible?: boolean;
+    actions?: { name: string; action: string; color: string; icon: string }[];
+    options?: string[] | { label: string; value: string }[];
 }

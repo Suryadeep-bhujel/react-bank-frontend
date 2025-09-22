@@ -5,6 +5,7 @@ import Pagination from "@shared/Pagination";
 import DialogModal from "@shared/DialogModal";
 import { useDialogueState } from "@states/useDialogueState";
 import SearchWidget from "@src/pages/shared/SearchWidget";
+import DataTableV1 from "@shared/DataTableV1"
 const CustomerList: React.FC = () => {
     const {
         customerList,
@@ -22,7 +23,8 @@ const CustomerList: React.FC = () => {
         setDialogTitle,
         errors,
         setErrors,
-        handleSearch
+        handleSearch,
+        limit
 
     } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
@@ -60,6 +62,17 @@ const CustomerList: React.FC = () => {
             setIsDialogOpen(true);
         }
     }
+    const actionItems = [
+        {
+            buttonName: "Edit",
+            action: "edit",
+            color: "blue",
+            icon: "fa fa-edit",
+            onClick: (recordItem: CustomerInterface) => {
+                handleEditCustomer(recordItem._oid);
+            }
+        }
+    ]
 
     return (
         <>
@@ -102,61 +115,29 @@ const CustomerList: React.FC = () => {
 
                 {/* content Area */}
                 {/* <pre>{JSON.stringify(customerList, null, 2)}</pre> */}
-                <table className="table-auto w-full border-collapse border border-green-600">
-                    {/* <!-- <caption className="text-lg font-semibold text-gray-700 mb-4">Authors</caption> --> */}
-                    <thead>
-                        <tr className="bg-gray-200">
-                            <th className="w-1/4 px-4 py-2">ID</th>
-                            <th className="w-1/4 px-4 py-2">First Name</th>
-                            <th className="w-1/4 px-4 py-2">Middle Name</th>
-                            <th className="w-1/4 px-4 py-2">Last Name</th>
-                            <th className="w-1/4 px-4 py-2">Email</th>
-                            <th className="w-1/4 px-4 py-2">Phone No.</th>
-                            <th className="w-1/4 px-4 py-2">DOB</th>
-                            <th className="w-1/4 px-4 py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {customerList.map((customerItem: CustomerInterface) => (
-                            <tr className="border-b" key={customerItem.id}>
-                                <>
-                                    <td className="px-4 py-2">{customerItem?.id} </td>
-                                    <td className="px-4 py-2">{customerItem?.firstName} </td>
-                                    <td className="px-4 py-2">{customerItem?.middleName} </td>
-                                    <td className="px-4 py-2">{customerItem?.lastName} </td>
-                                    <td className="px-4 py-2"> {customerItem.email} </td>
-                                    <td className="px-4 py-2"> {customerItem?.phoneNumber} </td>
-                                    <td className="px-4 py-2"> {customerItem.dateOfBirth} </td>
-                                    <td className="px-4 py-2 flex justify-center-safe">
-                                        <button className="text-blue-500 hover:underline" onClick={() => handleEditCustomer(customerItem?._oid)}>
-                                            Edit
-                                        </button>
-                                        <button className="text-red-500 hover:underline ml-2">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </>
-                            </tr>
-                        ))}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td className="text-center py-2" colSpan={4}>
-                                {!isLoading && (
-                                    <Pagination
-                                        totalPages={totalPages}
-                                        startFrom={startFrom}
-                                        records={customerList.length}
-                                        total={total}
-                                        currentPage={currentPage}
-                                        pageChanged={handlePageChange}
-                                        pageSizeChanged={handlePageSizeChange}
-                                    />
-                                )}
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+
+                <DataTableV1
+                    tableColumns={customerStructure}
+                    records={customerList}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    limit={limit}
+                    updatePermission={() => { }}
+                    actions={actionItems}
+                >
+                    sdjfdslkfjv sdjfdslkfjsdjfdslkfjsdjfdslkfjsdjfdslkfj
+                </DataTableV1>
+                {!isLoading && (
+                    <Pagination
+                        totalPages={totalPages}
+                        startFrom={startFrom}
+                        records={customerList.length}
+                        total={total}
+                        currentPage={currentPage}
+                        pageChanged={handlePageChange}
+                        pageSizeChanged={handlePageSizeChange}
+                    />
+                )}
             </div>
         </>
     )

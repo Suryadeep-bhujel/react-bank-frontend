@@ -8,6 +8,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { CommonListReponse } from './models/CommonListReponse';
+export type { CreateBankAccountDto } from './models/CreateBankAccountDto';
 export type { CreateBranchDto } from './models/CreateBranchDto';
 export type { CreateBranchManagerDto } from './models/CreateBranchManagerDto';
 export type { CreateBranchStaffDto } from './models/CreateBranchStaffDto';
@@ -25,6 +26,7 @@ export type { LoginDto } from './models/LoginDto';
 export type { LoginResponseDto } from './models/LoginResponseDto';
 export type { RoleDetailDto } from './models/RoleDetailDto';
 export type { RoleDetailResponseDto } from './models/RoleDetailResponseDto';
+export type { UpdateBankAccountDto } from './models/UpdateBankAccountDto';
 export type { UpdateBranchDto } from './models/UpdateBranchDto';
 export type { UpdateBranchManagerDto } from './models/UpdateBranchManagerDto';
 export type { UpdateBranchStaffDto } from './models/UpdateBranchStaffDto';
@@ -42,6 +44,7 @@ export type { UserRolesRequestDto } from './models/UserRolesRequestDto';
 
 export { AppService } from './services/AppService';
 export { AuthService } from './services/AuthService';
+export { BankAccountService } from './services/BankAccountService';
 export { BranchManagementService } from './services/BranchManagementService';
 export { BranchManagerService } from './services/BranchManagerService';
 export { BranchStaffService } from './services/BranchStaffService';

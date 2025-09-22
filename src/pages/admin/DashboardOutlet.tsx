@@ -1,31 +1,40 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import {navigationList} from "@src/shared/Navigation"
+import { navigationList } from "@src/shared/Navigation"
 import type { RouteType } from "shared/Navigation";
 const DashboardOutlet: React.FC = () => {
-    const [isExpandedProfile, setExpand] = useState<Boolean>(false)
-    const expandProfileDropDowan = () => {
-        setExpand(isExpandedProfile ? false : true)
-    }
-    const checkIsActiveRoute = (path:string) => {
-        const location = useLocation()
-          //  console.log("locationlocation", location)
-        return (path?.toLowerCase() === location.pathname.toLowerCase())? 
-        'block px-4 py-2 rounded bg-blue-200    font-semibold hover:bg-blue-100' : 'block px-4 py-2  font-semibold hover:bg-blue-100';
-    }
+  const [isExpandedProfile, setExpand] = useState<Boolean>(false)
+  const expandProfileDropDowan = () => {
+    setExpand(isExpandedProfile ? false : true)
+  }
+  const checkIsActiveRoute = (path: string) => {
+    const location = useLocation()
+    //  console.log("locationlocation", location)
+    return (path?.toLowerCase() === location.pathname.toLowerCase()) ?
+      'block px-4 py-2 rounded bg-blue-200    font-semibold hover:bg-blue-100' : 'block px-4 py-2  font-semibold hover:bg-blue-100';
+  }
   return (
     <>
       <div className="flex min-h-screen">
-        <div className="fixed z-40 md:static w-64 bg-white shadow-md px-4 py-6 transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
+        <div className="fixed z-40 md:static w-50 bg-white shadow-md px-4 py-6 transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
           <h1 className="text-xl font-bold text-blue-600 mb-8 text-center">
             Admin Panel
           </h1>
           <nav className="space-y-2">
-            {navigationList && navigationList.length && navigationList.map((item :RouteType, index) => (
-                 <Link to={item.path} className={checkIsActiveRoute(item.path)} key={index}>
-                 {item.title}
-                 </Link>
+            {navigationList && navigationList.length && navigationList.map((item: RouteType, index) => (
+              <Link to={item.path} className={checkIsActiveRoute(item.path)} key={index}>
+                <div className="flex">
+                  <div
+                    className="icon"
+                    dangerouslySetInnerHTML={{ __html: item.leftIcon }}
+                  />
+                  <div className="navTitle">
+                    {item.title}
+                  </div>
+
+                </div>
+              </Link>
             ))}
           </nav>
         </div>
@@ -54,22 +63,22 @@ const DashboardOutlet: React.FC = () => {
                       </span>
                     </button>
                     {isExpandedProfile && (
-                    <div
-                      className="absolute right-0 mt-2 w-40 bg-white border rounded shadow z-10"
-                    >
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      <div
+                        className="absolute right-0 mt-2 w-40 bg-white border rounded shadow z-10"
                       >
-                        Profile
-                      </a>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                      >
-                        Logout
-                      </a>
-                    </div>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          Profile
+                        </a>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 text-sm hover:bg-gray-100"
+                        >
+                          Logout
+                        </a>
+                      </div>
 
                     )}
                   </div>

@@ -54,12 +54,13 @@ export const CustomerState = () => {
     }
     const [customer, setCustomerForm] = useState<CustomerInterface | null>(resetCustomerForm)
     const customerStructure: FormStructure[] = [
-        { label: "First Name", fieldName: "firstName", dataType: "text", required: true },
-        { label: "Middle Name", fieldName: "middleName", dataType: "text", required: false },
-        { label: "Last Name", fieldName: "lastName", dataType: "text", required: true },
-        { label: "Email", fieldName: "email", dataType: "email", required: true },
-        { label: "Phone No.", fieldName: "phoneNumber", dataType: "text", required: true },
-        { label: "Date Of Birth", fieldName: "dateOfBirth", dataType: "date", required: true },
+        { label: "First Name", fieldName: "firstName", dataType: "text", required: true, visible: true },
+        { label: "Middle Name", fieldName: "middleName", dataType: "text", required: false, visible: true },
+        { label: "Last Name", fieldName: "lastName", dataType: "text", required: true, visible: true },
+        { label: "Email", fieldName: "email", dataType: "email", required: true, visible: true },
+        { label: "Phone No.", fieldName: "phoneNumber", dataType: "text", required: true, visible: true },
+        { label: "Date Of Birth", fieldName: "dateOfBirth", dataType: "date", required: true, visible: true },
+        { label: "Actions", fieldName: "action", dataType: "action", required: false, visible: false, actions: [] }
     ]
 
     const [search, setSearchParams] = useState<Search>({
@@ -173,6 +174,7 @@ export const CustomerState = () => {
         setDialogTitle,
         errors,
         setErrors,
-        handleSearch
+        handleSearch,
+        limit: search.limit
     }
 }
