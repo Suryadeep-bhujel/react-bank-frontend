@@ -83,13 +83,16 @@ const App: React.FC = () => {
                                 }
                             >
                                 {/* 👇 These are nested under /dashboard and /branch-list */}
-                                {navigationList.map((item) => (
-                                    <Route
-                                        key={item.path}
-                                        path={item.path}
-                                        element={item.element}
-                                    />
-                                ))}
+                                {navigationList.map((item) => {
+                                    return (
+                                        <Route
+                                            key={item.path}
+                                            path={item.path}
+                                            element={item.element}
+                                        />
+                                    );
+                                }
+                                )}
                                 <Route path="my-profile" element={<MyProfile />} />
                                 {/* <Route path="dashboard" element={<Dashboard />} />
                                 <Route path="branch-list" element={<BranchList />} />

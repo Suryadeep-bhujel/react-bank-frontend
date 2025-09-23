@@ -22,7 +22,7 @@ const DashboardOutlet: React.FC = () => {
             Admin Panel
           </h1>
           <nav className="space-y-2">
-            {navigationList && navigationList.length && navigationList.map((item: RouteType, index) => (
+            {navigationList && navigationList.length && navigationList.filter(item => item.showInSidebar).map((item: RouteType, index) => (
               <Link to={item.path} className={checkIsActiveRoute(item.path)} key={index}>
                 <div className="flex">
                   <div
