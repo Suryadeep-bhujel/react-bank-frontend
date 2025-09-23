@@ -71,6 +71,13 @@ export const RoleState = () => {
             onClick: (recordItem: any) => {
                 navigate('/roles/edit/' + recordItem._oid);
             }
+        },
+        {
+            buttonName: "Permissions",
+            buttonType: "permission",
+            onClick: (recordItem: any) => {
+                navigate('/role/permissions/' + recordItem._oid);
+            }
         }
     ]
     const [search, setSearchParams] = useState<Search>({

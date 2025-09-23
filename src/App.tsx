@@ -2,27 +2,15 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import reactLogo from './assets/react.svg';
 import "./App.css";
-import Dashboard from "@src/pages/admin/Dashboard";
-import Login from "@src/pages/Login";
 import { AuthProvider } from "@context/AuthContext";
 import ProtectedRoute from "@context/ProtectedRoute";
-import BranchList from "@src/pages/admin/branch/BranchList";
-import DashboardOutlet from "@src/pages/admin/DashboardOutlet";
-import UserList from "@src/pages/admin/users/UserList";
-import MyProfile from "@src/pages/admin/profile/MyProfile";
-import RoleList from "@src/pages/admin/users/RoleList";
-import PermissionList from "@src/pages/admin/users/PermissionList";
-import BranchManagerList from "@src/pages/admin/branch/BranchManagerList";
-import CustomerList from "@src/pages/admin/customers/CustomerList";
-import CustomerApplicationList from "@src/pages/admin/customer-application/CustomerApplication";
 import { LoadingProvider, useLoading } from "@context/LoadingContext";
-import PermissionDetail from "@src/pages/admin/users/PermissionDetail";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Countries from "./pages/admin/countries/Countries";
-import BankAccount from "@src/pages/admin/accounts/BankAccounts";
-import AddUpdateBankAccount from "@src/pages/admin/accounts/AddUpdateBankAccount";
-
+import { navigationList } from "@src/shared/Navigation";
+import Login from "@src/pages/Login";
+import DashboardOutlet from "@src/pages/admin/DashboardOutlet";
+import MyProfile from "@src/pages/admin/profile/MyProfile";
 const Home: React.FC = () => {
     // const [count, setCount] = useState(0);
     //   const { formData, handleChange, handleSubmit } = useContactForm();
@@ -63,18 +51,18 @@ const App: React.FC = () => {
     }
     return (
         <>
-         <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored" // or "light" | "dark"
-      />
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored" // or "light" | "dark"
+            />
             <LoadingProvider>
                 <Loader />
                 <Home></Home>
@@ -95,7 +83,15 @@ const App: React.FC = () => {
                                 }
                             >
                                 {/* 👇 These are nested under /dashboard and /branch-list */}
-                                <Route path="dashboard" element={<Dashboard />} />
+                                {navigationList.map((item) => (
+                                    <Route
+                                        key={item.path}
+                                        path={item.path}
+                                        element={item.element}
+                                    />
+                                ))}
+                                <Route path="my-profile" element={<MyProfile />} />
+                                {/* <Route path="dashboard" element={<Dashboard />} />
                                 <Route path="branch-list" element={<BranchList />} />
                                 <Route path="branch-managers" element={<BranchManagerList />} />
                                 <Route path="user-list" element={<UserList />} />
@@ -103,13 +99,12 @@ const App: React.FC = () => {
                                 <Route path="role/permissions/:oid" element={<PermissionDetail />} />
                                 <Route path="role/add-role" element={<PermissionDetail />} />
                                 <Route path="permissions" element={<PermissionList />} />
-                                <Route path="my-profile" element={<MyProfile />} />
                                 <Route path="customer-list" element={<CustomerList />} />
                                 <Route path="customer-applications" element={<CustomerApplicationList />} />
                                 <Route path="country-list" element={<Countries />} />
                                 <Route path="accounts" element={<BankAccount />} />
                                 <Route path="accounts/add" element={<AddUpdateBankAccount />} />
-                                <Route path="account/edit/:_oid" element={<AddUpdateBankAccount />} />
+                                <Route path="account/edit/:_oid" element={<AddUpdateBankAccount />} /> */}
                             </Route>
                         </Routes>
                     </Router>
