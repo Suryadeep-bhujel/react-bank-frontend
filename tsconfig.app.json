@@ -29,7 +29,8 @@
       "@shared/*" : ["pages/shared/*"],
       "@openapi/*": ["openapi-request/services/*"],
       "@context/*":["context/*"],
+      "@bank-app-common/*" : ["@bank-app-common/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "@bank-app-common/**/*.ts"]
 }

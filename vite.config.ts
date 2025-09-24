@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import tsconfigPaths from 'vite-tsconfig-paths';
 // https://vite.dev/config/
 import path from "path"
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    tsconfigPaths()
   ],
   server: {
     proxy: {
@@ -27,6 +29,7 @@ export default defineConfig({
         '@shared': path.resolve(__dirname, 'src/pages/shared'),
         '@openapi' : path.resolve(__dirname, 'src/openapi-request/services'),
         '@context' : path.resolve(__dirname, 'src/context'),
+        '@bank-app-common' : path.resolve(__dirname, '@bank-app-common'),
          ///Users/suryadeep/Documents/projects/learning/javascript/reactjs/test-react-app/src/openapi-request/services/UsersManagementService.ts
         '@layouts': path.resolve(__dirname, 'src/layouts'),  // Alias @layouts to the 'src/layouts' folder
         // '@plugins': path.resolve(__dirname, 'src/plugins'),  // Alias @plugins to the 'src/plugins' folder
