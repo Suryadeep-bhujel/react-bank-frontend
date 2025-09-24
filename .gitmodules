@@ -1,0 +1,3 @@
+[submodule "@bank-app-common"]
+	path = @bank-app-common
+	url = https://github.com/Suryadeep-bhujel/bank-app-common.git
