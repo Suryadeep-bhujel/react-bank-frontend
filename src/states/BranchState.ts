@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { BranchManagementService } from "@openapi/BranchManagementService";
+import type { TableColumns } from "@src/shared/SharedInterface";
 export interface Search {
     fieldName?: string,
     fieldValue?: string,
@@ -23,6 +24,20 @@ export const BranchState = () => {
         limit: limit,
         page: currentPage,
     });
+    const tableColumns: TableColumns[] = [
+        { label: "ID", fieldName: "id", dataType: "number", visible: true },
+        { label: "Branch Name", fieldName: "branchName", dataType: "text", visible: true },
+        { label: "Branch Code", fieldName: "branchCode", dataType: "text", visible: true },
+        { label: "Branch Address", fieldName: "branchAddress", dataType: "text", visible: true },
+        { label: "Branch Phone No.", fieldName: "branchPhoneNumber", dataType: "text", visible: true },
+        { label: "Branch Email", fieldName: "branchEmail", dataType: "text", visible: true },
+        { label: "Branch Type", fieldName: "branchType", dataType: "text", visible: true },
+        { label: "Branch Status", fieldName: "branchStatus", dataType: "text", visible: true },
+        { label: "Actions", fieldName: "actions", dataType: "text", visible: false },
+    ]
+    const actionItems: any[] = [
+
+    ]
     useEffect(() => {
         getBranchList();
     }, [search]);
@@ -37,16 +52,33 @@ export const BranchState = () => {
         setLimit(response?.limit);
         setIsLoading(false)
     }
-    const handlePageChange = async (pageNo: number) => {
+    const handlePageChange = (pageNo: number) => {
         setCurrentPage(pageNo)
         setSearchParams(prev => ({
             ...prev,
             page: pageNo,
         }));
     }
+    const handlePageSizeChange = async (pageSize: number) => {
+        setSearchParams(prev => ({
+            ...prev,
+            limit: pageSize,
+        }));
+    }
+    const handleSearch = (fieldName: string, fieldValue: string) => {
+        console.log("Searching for", fieldName, fieldValue);
+        setSearchParams(prev => ({
+            ...prev,
+            fieldName,
+            fieldValue,
+            page: 1,
+            currentPage: 1
+        }));
+    }
     return {
         getBranchList,
         handlePageChange,
+        handlePageSizeChange,
         branchList,
         limit,
         search,
@@ -54,6 +86,9 @@ export const BranchState = () => {
         total,
         currentPage,
         startFrom,
-        isLoading
+        isLoading,
+        tableColumns,
+        actionItems,
+        handleSearch
     }
 }
