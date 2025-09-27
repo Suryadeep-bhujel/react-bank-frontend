@@ -81,20 +81,10 @@ const CustomerList: React.FC = () => {
                     <h1 className="text-2xl font-bold text-cyan-900 mb-4">Customers List</h1>
                     <button onClick={() => {
                         openAddCustomerModal();
-                    }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
+                    }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-indigo-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
                         Add Customer
                     </button>
-                    {/* <div className="text-gray-500 justify-end">
-                        <Link to="add-customer" className="bg-sky-900 text-white px-4 py-2 rounded">
-                            Add Customer
-                        </Link>
-
-                    </div> */}
                 </div>
-                <SearchWidget
-                    fields={customerStructure}
-                    onSearch={(fieldName, fieldValue) => handleSearch(fieldName, fieldValue)}
-                />
 
 
 
@@ -112,10 +102,6 @@ const CustomerList: React.FC = () => {
                         formErrors={errors}
                     ></DialogModal>
                 )}
-
-                {/* content Area */}
-                {/* <pre>{JSON.stringify(customerList, null, 2)}</pre> */}
-
                 <DataTableV1
                     tableColumns={customerStructure}
                     records={customerList}
@@ -124,20 +110,14 @@ const CustomerList: React.FC = () => {
                     limit={limit}
                     updatePermission={() => { }}
                     actions={actionItems}
+                    handleSearch={handleSearch}
+                    total={total}
+                    startFrom={startFrom}
+                    handlePageChange={handlePageChange}
+                    handlePageSizeChange={handlePageSizeChange}
                 >
-                    sdjfdslkfjv sdjfdslkfjsdjfdslkfjsdjfdslkfjsdjfdslkfj
                 </DataTableV1>
-                {!isLoading && (
-                    <Pagination
-                        totalPages={totalPages}
-                        startFrom={startFrom}
-                        records={customerList.length}
-                        total={total}
-                        currentPage={currentPage}
-                        pageChanged={handlePageChange}
-                        pageSizeChanged={handlePageSizeChange}
-                    />
-                )}
+
             </div>
         </>
     )
