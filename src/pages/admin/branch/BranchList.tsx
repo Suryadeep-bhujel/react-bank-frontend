@@ -6,7 +6,6 @@ import DataTableV1 from "@src/pages/shared/DataTableV1";
 const BranchList: React.FC = () => {
   const {
     branchList,
-    getBranchList,
     handlePageChange,
     handlePageSizeChange,
     handleSearch,
@@ -19,10 +18,6 @@ const BranchList: React.FC = () => {
     actionItems,
 
   } = BranchState()
-  // const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    getBranchList();
-  }, [])
   return (
     <>
       <div className="">

@@ -39,8 +39,9 @@ export const BranchState = () => {
 
     ]
     useEffect(() => {
+        setIsLoading(true);
         getBranchList();
-    }, [search]);
+    }, [search.fieldValue, search.limit, search.page]);
     const getBranchList = async () => {
         const { data: response } = await BranchManagementService.findAll(search)
         setBranchList(response?.data);
