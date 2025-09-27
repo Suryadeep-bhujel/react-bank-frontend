@@ -7,15 +7,10 @@ import SearchWidget from "@src/pages/shared/SearchWidget";
 const BankAccount: React.FC = () => {
     const {
         bankAccountList,
-        setBankAccountList,
-        dialogTitle,
-        setDialogTitle,
         errors,
         setErrors,
         isLoading,
-        setIsLoading,
         search,
-        setSearchParams,
         handlePageSizeChange,
         handlePageChange,
         limit,
@@ -34,20 +29,11 @@ const BankAccount: React.FC = () => {
                     }} data-modal-toggle="default-modal" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer" type="button">
                         Add Account
                     </button> */}
-                    <Link to="add" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
+                    <Link to="add" className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 pt-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
                         Add Account
                     </Link>
 
                 </div>
-                <SearchWidget
-                    fields={tableColumns}
-                    onSearch={(fieldName, fieldValue) => handleSearch(fieldName, fieldValue)}
-                />
-
-
-
-
-
                 {/* {isDialogOpen && (
                     <DialogModal
                         formInputs={customerForm}
@@ -61,9 +47,6 @@ const BankAccount: React.FC = () => {
                     ></DialogModal>
                 )} */}
 
-                {/* content Area */}
-                {/* <pre>{JSON.stringify(customerList, null, 2)}</pre> */}
-
                 <DataTableV1
                     tableColumns={tableColumns}
                     records={bankAccountList}
@@ -72,19 +55,13 @@ const BankAccount: React.FC = () => {
                     limit={limit}
                     updatePermission={() => { }}
                     actions={actionItems}
-                >
-                </DataTableV1>
-                {!isLoading && (
-                    <Pagination
-                        totalPages={totalPages}
-                        startFrom={startFrom}
-                        records={bankAccountList.length}
-                        total={total}
-                        currentPage={currentPage}
-                        pageChanged={handlePageChange}
-                        pageSizeChanged={handlePageSizeChange}
-                    />
-                )}
+                    handleSearch={handleSearch}
+                    startFrom={startFrom}
+                    total={total}
+                    handlePageChange={handlePageChange}
+                    handlePageSizeChange={handlePageSizeChange}
+
+                />
             </div>
         </>
     );
