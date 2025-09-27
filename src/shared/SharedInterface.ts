@@ -109,6 +109,7 @@ export interface FormStructure {
     single?: boolean,
     onChange?: ({ }) => void;
     disabled?: boolean
+    placeholder?: string
 }
 export interface InputOptionInterface {
     label: string;
