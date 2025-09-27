@@ -1,10 +1,12 @@
 import { useLoading } from "@context/LoadingContext";
 import { BankAccountService } from "@src/openapi-request";
-import { SharedStatus } from "@src/shared/SharedEnum";
+import { SharedStatus } from "@bank-app-common/enum/SharedEnum";
 import type { FormStructure, SearchInterface } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 export interface BankAccountInterface {
     id?: number | null;
     _oid?: string;
@@ -15,15 +17,17 @@ export interface BankAccountInterface {
     customerId?: string;
     createdAt?: string;
     updatedAt?: string;
+    customerOids?:string[]
 }
 
 export const useBankAccountState = () => {
     const { setIsLoading, isLoading } = useLoading();
     const navigate = useNavigate();
-    const [bankAccountList, setBankAccountList] = useState<BankAccountInterface[]>([]);
     const [dialogTitle, setDialogTitle] = useState("Add Bank Account");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
+    const [bankAccountList, setBankAccountList] = useState<BankAccountInterface[]>([]);
+    
     useEffect(() => {
         getCustomersList();
     }, [search.currentPage, search.limit, search.fieldValue]);
@@ -73,10 +77,14 @@ export const useBankAccountState = () => {
         { label: "Account Type", fieldName: "accountType", dataType: "text", required: true, visible: true },
         { label: "Balance", fieldName: "balance", dataType: "number", required: true, visible: true },
         { label: "Account Holders", fieldName: "accountHolders", dataType: "array", required: false, visible: true },
+        { label: "Branch Name", fieldName: "branchName", dataType: "text", required: false, visible: true },
+        { label: "Branch Code", fieldName: "branchCode", dataType: "text", required: false, visible: true },
 
         { label: "Currency", fieldName: "currency", dataType: "text", required: true, visible: true },
         { label: "Customer ID", fieldName: "customerId", dataType: "text", required: true, visible: true },
         { label: "Account Status", fieldName: "status", dataType: "options", required: true, visible: true, options: Object.values(SharedStatus).map(status => ({ label: status, value: status })) },
+        { label: "Created At", fieldName: "createdAt", dataType: "date", required: false, visible: false },
+
         { label: "Actions", fieldName: "action", dataType: "action", required: false, visible: false, actions: [] }
     ]
     const actionItems = [
