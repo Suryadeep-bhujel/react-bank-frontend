@@ -58,19 +58,51 @@ export class BranchManagementService {
         });
     }
     /**
-     * @returns string
+     * @returns CommonListReponse
+     * @throws ApiError
+     */
+    public static branchDropdown({
+        fieldName,
+        fieldValue,
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+    }: {
+        fieldName?: string,
+        fieldValue?: string,
+        page?: number,
+        limit?: number,
+        sortBy?: string,
+        sortOrder?: string,
+    }): CancelablePromise<CommonListReponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/branch/branch-dropdown',
+            query: {
+                'fieldName': fieldName,
+                'fieldValue': fieldValue,
+                'page': page,
+                'limit': limit,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+            },
+        });
+    }
+    /**
+     * @returns any
      * @throws ApiError
      */
     public static findOne({
-        id,
+        oid,
     }: {
-        id: string,
-    }): CancelablePromise<string> {
+        oid: string,
+    }): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/branch/{id}',
+            url: '/api/branch/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
         });
     }
@@ -79,36 +111,36 @@ export class BranchManagementService {
      * @throws ApiError
      */
     public static update({
-        id,
+        oid,
         requestBody,
     }: {
-        id: string,
+        oid: string,
         requestBody: UpdateBranchDto,
     }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/api/branch/{id}',
+            url: '/api/branch/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
             body: requestBody,
             mediaType: 'application/json',
         });
     }
     /**
-     * @returns string
+     * @returns any
      * @throws ApiError
      */
     public static remove({
-        id,
+        oid,
     }: {
-        id: string,
-    }): CancelablePromise<string> {
+        oid: string,
+    }): CancelablePromise<Record<string, any>> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/branch/{id}',
+            url: '/api/branch/{_oid}',
             path: {
-                'id': id,
+                '_oid': oid,
             },
         });
     }

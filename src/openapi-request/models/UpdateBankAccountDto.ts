@@ -3,7 +3,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type UpdateBankAccountDto = {
-    customerOids?: Array<string>;
     accountType?: string;
     balance?: number;
     currency?: string;

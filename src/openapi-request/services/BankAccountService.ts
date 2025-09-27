@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CreateBankAccountDto } from '../models/CreateBankAccountDto';
+import type { CreateBankAccountRequestDto } from '../models/CreateBankAccountRequestDto';
 import type { UpdateBankAccountDto } from '../models/UpdateBankAccountDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,7 +15,7 @@ export class BankAccountService {
     public static create({
         requestBody,
     }: {
-        requestBody: CreateBankAccountDto,
+        requestBody: CreateBankAccountRequestDto,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
