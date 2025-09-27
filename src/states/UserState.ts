@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { UsersManagementService } from "../openapi-request";
+import { UsersManagementService } from "@src/openapi-request";
+import type { SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
+import { searchResetData } from "@src/shared/SharedResetData";
+import { useLoading } from "@context/LoadingContext";
 export class DashboardStore {
     // const [users, setUsers] = useState<any[]>([]);
     // const [limit, setLimit] = useState<number>(100);
@@ -12,45 +15,30 @@ export interface Search {
     sortBy?: string,
     sortOrder?: string,
 }
-export const UserService = () => {
+export const useUserState = () => {
     const [users, setUsers] = useState<any[]>([]);
+    const { setIsLoading, isLoading } = useLoading();
     // const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [limit, setLimit] = useState<number>(100);
     const [totalPages, setTotalPages] = useState<number>(0)
     const [total, setTotal] = useState<number>(0)
     const [currentPage, setCurrentPage] = useState<number>(0)
     const [startFrom, setTstartFrom] = useState<number>(0)
+    const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
 
-    const [search, setSearchParams] = useState<Search>({
-        fieldName: '',
-        fieldValue: '',
-        limit: 20,
-        page: 1,
-    });
-    // useEffect(async() => {
-    //     setSearchParams({
-    //         limit: 
-    //     })
-    // })
-    // useEffect(() => {
-    //     const loadUserData = async () => {
-    //         const response = await UsersManagementService.usersControllerFindAll({});
-    //         console.log("response----->", response)
-
-    //         setUsers(response?.data);
-    //         setLimit(response?.limit);
-    //     }
-    //     loadUserData()
-    // }, [users])
+    const tableColumns: TableColumnStructure[] = [
+        { label: "ID", fieldName: "id", dataType: "number", visible: true },
+        { label: "Full Name", fieldName: "name", dataType: "text", visible: true },
+        { label: "Email", fieldName: "email", dataType: "email", visible: true },
+        { label: "Phone No.", fieldName: "phone", dataType: "text", visible: true },
+        { label: "Username", fieldName: "username", dataType: "text", visible: true },
+        { label: "Role", fieldName: "role", dataType: "text" },
+    ]
     useEffect(() => {
-        setSearchParams({
-            limit: 20,
-            fieldName: '',
-            fieldValue: '',
-            page: 1,
-            // sortBy: ,
-            // sortOrder,
-        });
+        getUsersList();
+    }, [search.currentPage, search.limit, search.fieldValue]);
+    useEffect(() => {
+        setSearchParams(searchResetData);
     }, []);
     const getUsersList = async () => {
         // setSearchParams({
@@ -74,14 +62,48 @@ export const UserService = () => {
         setLimit(response?.limit);
         // return users;
     }
+    const handlePageChange = async (pageNo: number) => {
+        if (pageNo !== search.currentPage) {
+            console.log("search condition inside", pageNo)
+            setSearchParams(prev => ({
+                ...prev,
+                page: pageNo,
+                currentPage: pageNo
+            }));
+        }
+    }
+    const handlePageSizeChange = async (pageSize: number) => {
+        setSearchParams(prev => ({
+            ...prev,
+            limit: pageSize,
+        }));
+    }
+    const handleSearch = (fieldName: string, fieldValue: string) => {
+        console.log("Searching for", fieldName, fieldValue);
+        setSearchParams(prev => ({
+            ...prev,
+            fieldName,
+            fieldValue,
+            page: 1,
+            currentPage: 1
+        }));
+    }
+    const actionItems: any[] = [
+
+    ]
     return {
-        getUsersList,
         users,
         limit,
         search,
         totalPages,
         total,
         currentPage,
-        startFrom
+        startFrom,
+        tableColumns,
+        actionItems,
+        isLoading,
+        handlePageChange,
+        handlePageSizeChange,
+        handleSearch
     }
 }

@@ -82,7 +82,7 @@ export interface TabPanelProps {
     index: number;
     value: number;
 }
-export interface TableColumns {
+export interface TableColumnStructure {
     name?: string;
     fieldName: string;
     label?: string;
