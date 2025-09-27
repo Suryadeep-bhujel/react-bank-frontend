@@ -1,9 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useBankAccountState } from "@states/useBankAccountState"
-import Pagination from "@src/pages/shared/Pagination";
 import DataTableV1 from "@src/pages/shared/DataTableV1";
-import SearchWidget from "@src/pages/shared/SearchWidget";
 const BankAccount: React.FC = () => {
     const {
         bankAccountList,
