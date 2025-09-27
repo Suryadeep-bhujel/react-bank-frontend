@@ -26,6 +26,7 @@ const FormWidget: React.FC<Props> = ({
         <>
             {/* {`grid-cols-${rows}`} */}
             <div>
+                {/* {JSON.stringify(formStructure)} */}
                 {/* <form className="space-y-4" action="#" method="POST" onSubmit={(e) => { e.preventDefault() }}> */}
                 {formErrors && (
                     <>
@@ -71,10 +72,12 @@ const FormWidget: React.FC<Props> = ({
                             )}
                             {field.dataType !== 'options' && (
                                 <>
-                                    <input disabled= {field?.disabled} key={field.fieldName} type={field.dataType} name={field.fieldName} onChange={(e) => {
-                                        onInputChange(e);
-                                        field?.onChange(field.dataType === 'checkbox' ? e?.target?.checked : e?.target.value);
-                                    }} id={field.fieldName} value={formModel?.[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label}`} />
+                                    <input key={field.fieldName} type={field.dataType} name={field.fieldName} onChange={(e) => {
+                                        if (field.dataType === 'date') {
+                                            // e.target.value === DateAndTimeService.convertDate(formModel?.[field.fieldName])
+                                        }
+                                        onInputChange(e)
+                                    }} id={field.fieldName} value={formModel?.[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={field?.placeholder ? field?.placeholder : `Enter ${field.label}`} />
                                 </>
                             )}
                         </div>
@@ -103,29 +106,16 @@ const FormWidget: React.FC<Props> = ({
                                             field.searchItems ? field.searchItems(nextValue) : undefined;
                                         }}
                                     />
-                                    {/* <select
-                                        name={field.fieldName}
-                                        value={formModel?.[field.fieldName] ?? ""}
-                                        onChange={(e) => onInputChange({ fieldName: field.fieldName, value: e.target.value })}
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                        <option value="">Select {field?.label} </option>
-                                        {field?.options?.map((option) => (
-                                            <option key={option?.value} value={option?.value}>
-                                                {option?.label}
-                                            </option>
-                                        ))}
-                                    </select> */}
                                 </>
                             )}
                             {field.dataType !== 'options' && (
                                 <>
-                                    <input key={field.fieldName} type={field.dataType} name={field.fieldName} onChange={(e)=> {
-                                        if(field.dataType==='date'){
+                                    <input key={field.fieldName} type={field.dataType} name={field.fieldName} onChange={(e) => {
+                                        if (field.dataType === 'date') {
                                             // e.target.value === DateAndTimeService.convertDate(formModel?.[field.fieldName])
                                         }
                                         onInputChange(e)
-                                    }} id={field.fieldName} value={formModel?.[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={`Enter your ${field.label}`} />
+                                    }} id={field.fieldName} value={formModel?.[field.fieldName] ?? ""} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder={field?.placeholder ? field?.placeholder : `Enter ${field.label}`} />
                                 </>
                             )}
                         </div>
