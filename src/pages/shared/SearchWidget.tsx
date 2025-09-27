@@ -27,54 +27,66 @@ const SearchWidget: React.FC<{
             onSearch(selectedFieldOption.fieldName, searchValue);
         }
     };
+    const resetSearch = () => {
+        onSearch('', '');
+    }
 
     return (
-        <div className="flex space-x-2 mb-4">
-            <select
-                value={selectedFieldOption ? selectedFieldOption.fieldName : ""}
-                onChange={handleFieldChange}
-                className="border border-gray-300 rounded px-2 py-1"
-            >
-                <option value="">Select Field</option>
-                {fields.filter(field => field.visible).map((field) => (
-                    <option key={field.fieldName} value={field.fieldName}>
-                        {field.label}
-                    </option>
-                ))}
-            </select>
-            {isFieldSelected && (
-                <>
-                    {selectedFieldOption?.dataType === "options" && (
-                        <select
-                            value={searchValue}
-                            onChange={handleValueChange}
-                            className="border border-gray-300 rounded px-2 py-1 flex-grow"
+        <div className="grid grid-cols-2">
+            <div className="flex space-x-2 mb-4">
+                <select
+                    value={selectedFieldOption ? selectedFieldOption.fieldName : ""}
+                    onChange={handleFieldChange}
+                    className="border border-gray-300 rounded px-2 py-1"
+                >
+                    <option value="">Select Field</option>
+                    {fields.filter(field => field.visible).map((field) => (
+                        <option key={field.fieldName} value={field.fieldName}>
+                            {field.label}
+                        </option>
+                    ))}
+                </select>
+                {isFieldSelected && (
+                    <>
+                        {selectedFieldOption?.dataType === "options" && (
+                            <select
+                                value={searchValue}
+                                onChange={handleValueChange}
+                                className="border border-gray-300 rounded px-2 py-1 flex-grow"
+                            >
+                                <option value="">Select {selectedFieldOption?.label}</option>
+                                {selectedFieldOption?.options?.map((option) => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+                        {selectedFieldOption?.dataType !== "options" && (
+                            <input
+                                type={selectedFieldOption?.dataType || "text"}
+                                value={searchValue}
+                                onChange={handleValueChange}
+                                placeholder={`Enter ${selectedFieldOption?.label} value`}
+                                className="border border-gray-300 rounded px-2 py-1 flex-grow"
+                            />
+                        )}
+                        <button
+                            onClick={handleSearch}
+                            className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
                         >
-                            <option value="">Select {selectedFieldOption?.label}</option>
-                            {selectedFieldOption?.options?.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-                    {selectedFieldOption?.dataType !== "options" && (
-                        <input
-                            type={selectedFieldOption?.dataType || "text"}
-                            value={searchValue}
-                            onChange={handleValueChange}
-                            placeholder={`Enter ${selectedFieldOption?.label} value`}
-                            className="border border-gray-300 rounded px-2 py-1 flex-grow"
-                        />
-                    )}
-                    <button
-                        onClick={handleSearch}
-                        className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                    >
-                        Search
-                    </button>
-                </>
-            )}
+                            Search
+                        </button>
+                        <button
+                            onClick={resetSearch}
+                            className="bg-red-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                        >
+                            Reset
+                        </button>
+                    </>
+                )}
+            </div>
+
         </div>
     );
 };
