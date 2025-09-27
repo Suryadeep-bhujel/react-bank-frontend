@@ -16,7 +16,7 @@ export interface PaginationProps {
     records: number;
     total: number;
     currentPage: number;
-    limit:number;
+    limit: number;
     pageChanged: (page: number) => void;
     pageSizeChanged: (page: number) => void;
 
@@ -30,12 +30,12 @@ export interface ColumnTypeInterface {
 export interface ListTableInterface {
     tableColumns: ColumnTypeInterface[];
     records: any[];
-    currentPage: number;
-    totalPages: number;
-    total?: number;
-    limit: number;
+    currentPage: number | null | undefined;
+    totalPages: number | null | undefined;
+    total?: number | null | undefined;
+    limit: number | null | undefined;
     actions?: any[];
-    startFrom?: number;
+    startFrom?: number | null | undefined;
     handlePageChange: ({ }) => void;
     handlePageSizeChange: ({ }) => void;
     paginationSpace?: string;

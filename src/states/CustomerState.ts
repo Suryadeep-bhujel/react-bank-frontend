@@ -77,6 +77,7 @@ export const CustomerState = () => {
         getCustomersList();
     }, [search.currentPage, search.limit, search.fieldValue]);
     const getCustomersList = async () => {
+        setIsLoading(true);
         const { data: response } = await CustomerService.findAll(search)
         setCusomterList(response?.data);
         let startFrom = response.currentPage > 1 ? (response.currentPage - 1) * (search.limit || 100) : 1;
@@ -84,9 +85,7 @@ export const CustomerState = () => {
             ...prev,
             totalPages: response.totalPages,
             total: response.total,
-            // currentPage: response.currentPage,
             startFrom,
-            // limit: response?.limit
         }))
         setIsLoading(false)
     }
