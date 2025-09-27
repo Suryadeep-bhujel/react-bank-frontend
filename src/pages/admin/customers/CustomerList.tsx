@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { CustomerState, type CustomerInterface } from "@states/CustomerState"
-import Pagination from "@shared/Pagination";
 import DialogModal from "@shared/DialogModal";
 import { useDialogueState } from "@states/useDialogueState";
-import SearchWidget from "@src/pages/shared/SearchWidget";
 import DataTableV1 from "@shared/DataTableV1"
 const CustomerList: React.FC = () => {
     const {
@@ -85,10 +82,6 @@ const CustomerList: React.FC = () => {
                         Add Customer
                     </button>
                 </div>
-
-
-
-
 
                 {isDialogOpen && (
                     <DialogModal
