@@ -1,12 +1,12 @@
-import type { TableColumns } from "@src/shared/SharedInterface";
+import type { TableColumnStructure } from "@src/shared/SharedInterface";
 import React from "react";
 
 
 const SearchWidget: React.FC<{
-    fields: TableColumns[];
+    fields: TableColumnStructure[];
     onSearch: (fieldName: string, fieldValue: string) => void;
 }> = ({ fields, onSearch }) => {
-    const [selectedFieldOption, setSelectedField] = React.useState<TableColumns | null>(null);
+    const [selectedFieldOption, setSelectedField] = React.useState<TableColumnStructure | null>(null);
     const [searchValue, setSearchValue] = React.useState<string>("");
     const [isFieldSelected, setIsFieldSelected] = React.useState<boolean>(false);
 
@@ -40,8 +40,8 @@ const SearchWidget: React.FC<{
                     className="border border-gray-300 rounded px-2 py-1"
                 >
                     <option>Select Field for search</option>
-                    {fields.filter(field => field.visible).map((field) => (
-                        <option key={field.fieldName} value={field.fieldName}>
+                    {fields.filter(field => field.visible).map((field, key) => (
+                        <option key={`search${key}`} value={field.fieldName}>
                             {field.label}
                         </option>
                     ))}
