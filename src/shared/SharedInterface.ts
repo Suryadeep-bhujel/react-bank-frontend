@@ -16,6 +16,7 @@ export interface PaginationProps {
     records: number;
     total: number;
     currentPage: number;
+    limit:number;
     pageChanged: (page: number) => void;
     pageSizeChanged: (page: number) => void;
 
@@ -31,9 +32,14 @@ export interface ListTableInterface {
     records: any[];
     currentPage: number;
     totalPages: number;
+    total?: number;
     limit: number;
     actions?: any[];
-    updatePermission: (roldOid: string) => void;
+    startFrom?: number;
+    handlePageChange: ({ }) => void;
+    handlePageSizeChange: ({ }) => void;
+    paginationSpace?: string;
+    handleSearch: (fieldName: string, fieldValue: any) => void;
 }
 export interface DialogProps {
     isDialogOpen: boolean;
@@ -44,6 +50,14 @@ export interface DialogProps {
     formStructure?: any;
     formInputs?: any;
     formErrors?: any;
+}
+export interface SearchProps {
+    fieldName?: string,
+    fieldValue?: string,
+    page?: number,
+    limit?: number,
+    sortBy?: string,
+    sortOrder?: string,
 }
 export interface ActionTypeInterface {
     name: string;
@@ -68,8 +82,8 @@ export interface TabPanelProps {
     index: number;
     value: number;
 }
-export interface TableColumns{
-    name: string;
+export interface TableColumns {
+    name?: string;
     fieldName: string;
     label?: string;
     dataType: string;
@@ -81,8 +95,16 @@ export interface FormStructure {
     label: string;
     fieldName: string;
     dataType: string;
-    required: boolean;
+    required?: boolean;
     visible?: boolean;
     actions?: { name: string; action: string; color: string; icon: string }[];
     options?: string[] | { label: string; value: string }[];
+    searchItems?: ({ }) => void;
+    single?: boolean,
+    onChange?: ({ }) => void;
+    disabled?: boolean
+}
+export interface InputOptionInterface {
+    label: string;
+    value: number | string | bigint | null | undefined
 }

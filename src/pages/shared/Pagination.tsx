@@ -9,6 +9,7 @@ const Pagination: React.FC<PaginationProps> = ({
     currentPage,
     pageChanged,
     pageSizeChanged,
+    limit = 20
 }) => {
     const generatePages = () => {
         const pages = [];
@@ -42,15 +43,14 @@ const Pagination: React.FC<PaginationProps> = ({
         return pages;
     };
     const onPageChange = (currentPage: number) => {
-        // alert("hello")
         pageChanged(currentPage)
 
         console.log(currentPage, 'current page')
     };
-    const onPageSizeChange = async (pageSize : number) => {
-        console.log("pageSizepageSize", pageSize)
+    const onPageSizeChange = async (pageSize: number) => {
         pageSizeChanged(pageSize)
     }
+    const pagLimits: number[] = [10, 20, 100]
 
     const pages = generatePages();
     return (
@@ -86,14 +86,13 @@ const Pagination: React.FC<PaginationProps> = ({
                         <label htmlFor="pagination-page-size">Page Size</label>
                         <select onChange={(e) => {
                             e.preventDefault()
-                            // console.log("esdflkjsfdsdf", e)
                             onPageSizeChange(Number(e.target.value))
                         }} name="pagination-page-size" id="pagination-page-size">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="100">100</option>
-                            <option value="500">500</option>
-                            <option value="1000">1000</option>
+                            {pagLimits && pagLimits.length && pagLimits.map((pageLimitVal) => (
+                                <>
+                                    <option value={pageLimitVal} selected={pageLimitVal === limit}>{pageLimitVal}</option>
+                                </>
+                            ))}
                         </select>
                     </div>
                     <div>
@@ -104,7 +103,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             <a
                                 href="#" onClick={(e) => {
                                     e.preventDefault();
-                                    if(currentPage >1) onPageChange(Number(currentPage)-1)
+                                    if (currentPage > 1) onPageChange(Number(currentPage) - 1)
                                 }}
                                 className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                             >
@@ -139,7 +138,7 @@ const Pagination: React.FC<PaginationProps> = ({
                             <a
                                 href="#" onClick={(e) => {
                                     e.preventDefault();
-                                    if(currentPage < totalPages) onPageChange(Number(currentPage)+1)
+                                    if (currentPage < totalPages) onPageChange(Number(currentPage) + 1)
                                 }}
                                 className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                             >
