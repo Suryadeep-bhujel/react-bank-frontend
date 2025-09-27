@@ -227,33 +227,13 @@ export const BranchState = () => {
                 setFormModal(resetForm);
             }
             await getBranchList();
-            setIsLoading(false);
+            // setIsLoading(false);
             return response;
         } catch (error: any) {
             console.error("Error submitting form:", error);
-            if (error?.response?.data?.errors) {
-                const apiErrors = error.response.data.errors;
-                const formattedErrors: Record<string, string> = {};
-                apiErrors.forEach((err: { field: string; message: string }) => {
-                    formattedErrors[err.field] = err.message;
-                });
-                setErrors(formattedErrors);
-                return {
-                    success: false,
-                    message: "Validation errors occurred.",
-                    data: null
-                };
-            } else {
-                // Handle other types of errors (e.g., network issues)
-                setErrors({ general: "An unexpected error occurred. Please try again later." });
-                return {
-                    success: false,
-                    message: "An unexpected error occurred. Please try again later.",
-                    data: null
-                };
-            }
+            setErrors(error?.body?.message || error?.message || {});
         } finally {
-            setIsLoading(false);
+            // setIsLoading(false);
         }
     }
     return {

@@ -57,15 +57,6 @@ const DialogModal: React.FC<Props> = ({
                             </div>
 
                             <div className="p-4 md:p-5 space-y-4">
-                                {formErrors && Object.keys(formErrors).length > 0 && (
-                                    <div className="mb-4">
-                                        <ul className="list-disc list-inside text-sm text-red-600">
-                                            {Object.entries(formErrors).map(([field, errorMsg]) => (
-                                                <li key={field}>{errorMsg}</li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )}
                                 <form className="space-y-4" action="#" method="POST" onSubmit={(e) => { e.preventDefault(); submitFormData() }}>
                                     <FormWidget
                                         formModel={localForm}

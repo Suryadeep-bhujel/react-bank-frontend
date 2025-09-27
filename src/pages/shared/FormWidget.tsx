@@ -34,7 +34,9 @@ const FormWidget: React.FC<Props> = ({
                             <div className="mb-4">
                                 <ul className="list-disc list-inside text-sm text-red-600">
                                     {Object.entries(formErrors).map(([field, errorMsg]) => (
-                                        <li key={field}>{errorMsg}</li>
+                                        <li key={field} className="mb-1 text-sm text-red-700 bg-red-50 border border-red-100 rounded px-2 py-1" role="alert">
+                                            {errorMsg}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
