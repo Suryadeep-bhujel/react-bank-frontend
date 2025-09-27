@@ -1,4 +1,4 @@
-import type { ColumnTypeInterface, ListTableInterface } from "@src/shared/SharedInterface";
+import type { ListTableInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import React from "react";
 import Pagination from "@shared/Pagination";
 import SearchWidget from "@src/pages/shared/SearchWidget";
@@ -48,7 +48,6 @@ const ListTable: React.FC<ListTableInterface> = ({
                         {(tableColumns && tableColumns.length) && tableColumns.map((tableColumnObj) => (
                             <th className="w-1/4 px-4 py-2 text-left">{tableColumnObj.name || tableColumnObj.label}</th>
                         ))}
-                        {/* <th className="w-1/4 px-4 py-2">Actions</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -56,30 +55,24 @@ const ListTable: React.FC<ListTableInterface> = ({
                         <tr className="border-b" key={recordItem.id}>
                             <>
                                 <td className="px-4 py-2">{(currentPage > 1 ? (currentPage - 1) * (limit || 100) : 1) + index}</td>
-                                {tableColumns.map((fieldItem: ColumnTypeInterface) => (
+                                {tableColumns.map((fieldItem: TableColumnStructure) => (
                                     <>
-                                        {fieldItem.dataType !== "action" && (
-                                            <td className="px-4 py-2">{recordItem[fieldItem.fieldName]} </td>
-                                        )}
+                                        <td className="px-4 py-2">
+                                            {fieldItem.dataType !== "action" && (recordItem[fieldItem.fieldName])}
+                                            {fieldItem?.dataType === 'action' && fieldItem?.actions && fieldItem?.actions.length && (
+                                                <>
+                                                    <div className="flex mx-1">
+                                                        {fieldItem?.actions.map(actionItem => (
+                                                            <button onClick={(e) => { e.preventDefault(); actionItem.action(recordItem) }} type="button" className="block text-white bg-sky-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 mx-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
+                                                                {actionItem.buttonName}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </>
+                                            )}
+                                        </td>
                                     </>
                                 ))}
-                                {actions && actions.length > 0 && (
-                                    <td className="px-4 py-2 flex justify-center-safe">
-                                        {actions.map(actionButtonItem => (
-                                            <button onClick={(e) => { e.preventDefault(); actionButtonItem.onClick(recordItem) }} type="button" className="block text-white bg-sky-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 mx-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
-                                                {actionButtonItem.buttonName}
-                                            </button>
-
-                                        ))}
-                                        {/* <button onClick={(e) => {
-                                                e.preventDefault();
-                                                permissionClicked(recordItem._oid)
-                                            }} type="button" className="text-cyan-500 hover:underline ml-2">
-                                                Permissions
-                                            </button> */}
-
-                                    </td>
-                                )}
                             </>
                         </tr>
                     ))}

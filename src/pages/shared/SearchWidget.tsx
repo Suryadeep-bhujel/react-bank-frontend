@@ -39,7 +39,7 @@ const SearchWidget: React.FC<{
                     onChange={handleFieldChange}
                     className="border border-gray-300 rounded px-2 py-1"
                 >
-                    <option value="">Select Field</option>
+                    <option>Select Field for search</option>
                     {fields.filter(field => field.visible).map((field) => (
                         <option key={field.fieldName} value={field.fieldName}>
                             {field.label}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { BranchManagementService } from "@openapi/BranchManagementService";
-import type { TableColumns } from "@src/shared/SharedInterface";
+import type { TableColumnStructure } from "@src/shared/SharedInterface";
 export interface Search {
     fieldName?: string,
     fieldValue?: string,
@@ -24,7 +24,7 @@ export const BranchState = () => {
         limit: limit,
         page: currentPage,
     });
-    const tableColumns: TableColumns[] = [
+    const tableColumns: TableColumnStructure[] = [
         { label: "ID", fieldName: "id", dataType: "number", visible: true },
         { label: "Branch Name", fieldName: "branchName", dataType: "text", visible: true },
         { label: "Branch Code", fieldName: "branchCode", dataType: "text", visible: true },
@@ -33,7 +33,26 @@ export const BranchState = () => {
         { label: "Branch Email", fieldName: "branchEmail", dataType: "text", visible: true },
         { label: "Branch Type", fieldName: "branchType", dataType: "text", visible: true },
         { label: "Branch Status", fieldName: "branchStatus", dataType: "text", visible: true },
-        { label: "Actions", fieldName: "actions", dataType: "text", visible: false },
+        { label: "Actions", fieldName: "actions", dataType: "action", visible: false, actions: [
+            {
+                buttonName: "Edit",
+                icon: "sdf",
+                color: "sdfsdf",
+                action: (record:any )=> {
+                    console.log("recordItem ", record)
+                    alert(record._oid)
+                }
+            },
+            {
+                buttonName: "View",
+                icon: "sdf",
+                color: "sdfsdf",
+                action: (record:any )=> {
+                    console.log("recordItem ", record)
+                    alert(record._oid)
+                }
+            }
+        ] },
     ]
     const actionItems: any[] = [
 

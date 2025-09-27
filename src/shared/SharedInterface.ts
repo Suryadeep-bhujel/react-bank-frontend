@@ -82,12 +82,18 @@ export interface TabPanelProps {
     index: number;
     value: number;
 }
+export interface ActionInterface {
+    buttonName: string;
+    action: ({ }) => void;
+    color?: string;
+    icon?: string
+}
 export interface TableColumnStructure {
     name?: string;
     fieldName: string;
     label?: string;
     dataType: string;
-    actions?: { name: string; action: string; color: string; icon: string }[];
+    actions?: ActionInterface[];
     visible?: boolean;
 
 };
