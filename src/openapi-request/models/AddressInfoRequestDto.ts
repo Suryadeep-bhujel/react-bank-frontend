@@ -21,6 +21,5 @@ export type AddressInfoRequestDto = {
     isDefault?: boolean;
     remarks?: string;
     sameAddress?: boolean;
-:
 };
 
