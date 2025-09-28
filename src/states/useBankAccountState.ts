@@ -1,6 +1,6 @@
 import { useLoading } from "@context/LoadingContext";
 import { BankAccountService } from "@src/openapi-request";
-import { SharedStatus } from "@bank-app-common/enum/SharedEnum";
+import { SharedStatus } from "@src/shared/SharedEnum";
 import type { FormStructure, SearchInterface } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react";
