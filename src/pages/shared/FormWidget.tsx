@@ -1,7 +1,7 @@
 import type { FormStructure } from "@src/shared/SharedInterface";
 import { useEffect, useState } from "react";
 import Select from 'react-select'
-import { DateAndTimeService } from "../../../@bank-app-common/service/date-service";
+import { DateAndTimeService } from "@src/shared/DateService";
 
 type Props = {
     // onClose?: () => void;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { BranchManagementService } from "@openapi/BranchManagementService";
 import type { FormStructure, TableColumnStructure } from "@src/shared/SharedInterface";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
-import { BranchStatus, BranchType } from "@bank-app-common/enum/branch-enum";
+import { BranchStatus, BranchType } from "@src/shared/BranchEnum";
 import type { CreateBranchDto } from "@src/openapi-request";
 export interface Search {
     fieldName?: string,
