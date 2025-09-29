@@ -84,7 +84,15 @@ const App: React.FC = () => {
                             >
                                 {/* 👇 These are nested under /dashboard and /branch-list */}
                                 {navigationList.map((item) => {
-                                    return (
+                                    return ( item.isParent && item?.subMenus?.length ) ? (
+                                        item?.subMenus?.map((subItem) => (
+                                            <Route
+                                                key={subItem.path}
+                                                path={subItem.path}
+                                                element={subItem.element}
+                                            />
+                                        ))
+                                    ) : (
                                         <Route
                                             key={item.path}
                                             path={item.path}
