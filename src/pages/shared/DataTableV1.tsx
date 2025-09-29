@@ -47,7 +47,6 @@ const ListTable: React.FC<ListTableInterface> = ({
     const calculateFromRecordCount = () => {
 
     }
-   
     return (
         <>
             <SearchWidget
