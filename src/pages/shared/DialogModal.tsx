@@ -40,7 +40,7 @@ const DialogModal: React.FC<Props> = ({
     return (
         <>
             {isDialogOpen && (
-                <div id="default-modal" aria-hidden="true" className=" overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div id="default-modal" aria-hidden="true" className=" overflow-y-hidden overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 max-h-full h-full">
                     <div className="relative p-0 w-full max-w-3xl max-h-full">
                         <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
 
