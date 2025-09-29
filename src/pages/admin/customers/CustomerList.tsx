@@ -21,7 +21,8 @@ const CustomerList: React.FC = () => {
         errors,
         setErrors,
         handleSearch,
-        limit
+        limit,
+        listTableStructure
 
     } = CustomerState()
     const { currentPage, total, totalPages, startFrom } = search;
@@ -96,7 +97,7 @@ const CustomerList: React.FC = () => {
                     ></DialogModal>
                 )}
                 <DataTableV1
-                    tableColumns={customerStructure}
+                    tableColumns={listTableStructure}
                     records={customerList}
                     totalPages={totalPages}
                     currentPage={currentPage}

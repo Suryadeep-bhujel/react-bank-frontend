@@ -4,7 +4,7 @@ import { useLoading } from "@context/LoadingContext";
 import type { CreateCustomerDto } from "@src/openapi-request";
 import dayjs from "dayjs";
 import { toast } from 'react-toastify';
-import type { FormStructure } from "@src/shared/SharedInterface";
+import type { FormStructure, TableColumnStructure } from "@src/shared/SharedInterface";
 export interface Search {
     fieldName?: string;
     fieldValue?: string;
@@ -62,6 +62,20 @@ export const CustomerState = () => {
         { label: "Date Of Birth", fieldName: "dateOfBirth", dataType: "date", required: true, visible: true },
         { label: "Actions", fieldName: "action", dataType: "action", required: false, visible: false, actions: [] }
     ]
+    const listTableStructure: TableColumnStructure[] = [
+        { label: "Full Name", fieldName: "fullName", dataType: "text", visible: true },
+        { label: "Official ID No.", fieldName: "officialIdNo", dataType: "text", visible: true },
+        { label: "Email", fieldName: "email", dataType: "email", visible: true },
+        { label: "Phone No.", fieldName: "phoneNumber", dataType: "text", visible: true },
+        { label: "Date Of Birth", fieldName: "dateOfBirth", dataType: "date", visible: true },
+        { label: "Gender", fieldName: "gender", dataType: "text", visible: true },
+        { label: "Mobile No", fieldName: "phoneNumber", dataType: "text", visible: true },
+        { label: "Nationality", fieldName: "nationality", dataType: "text", visible: true },
+        { label: "PAN No.", fieldName: "panNumber", dataType: "text", visible: true },
+
+        { label: "Actions", fieldName: "action", dataType: "action", visible: false, actions: [] },
+
+    ]
 
     const [search, setSearchParams] = useState<Search>({
         fieldName: '',
@@ -79,7 +93,12 @@ export const CustomerState = () => {
     const getCustomersList = async () => {
         setIsLoading(true);
         const { data: response } = await CustomerService.findAll(search)
-        setCusomterList(response?.data);
+        setCusomterList(response?.data.map((item) => ({
+            ...item,
+            dateOfBirth: item?.dateOfBirth ? dayjs(item?.dateOfBirth).format("DD-MM-YYYY") : '',
+            fullName: `${item?.firstName || ''} ${item?.middleName || ''} ${item?.lastName || ''}`.replace(/\s+/g, ' ').trim()
+        })) || [])
+        console.log("customer list response", response);
         let startFrom = response.currentPage > 1 ? (response.currentPage - 1) * (search.limit || 100) : 1;
         setSearchParams(prev => ({
             ...prev,
@@ -174,6 +193,7 @@ export const CustomerState = () => {
         errors,
         setErrors,
         handleSearch,
-        limit: search.limit
+        limit: search.limit,
+        listTableStructure
     }
 }
