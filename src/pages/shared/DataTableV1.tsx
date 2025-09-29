@@ -1,5 +1,5 @@
 import type { ListTableInterface, TableColumnStructure } from "@src/shared/SharedInterface";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Pagination from "@shared/Pagination";
 import SearchWidget from "@src/pages/shared/SearchWidget";
 const ListTable: React.FC<ListTableInterface> = ({
@@ -16,8 +16,30 @@ const ListTable: React.FC<ListTableInterface> = ({
     handlePageSizeChange,
     handleSearch
 }) => {
-    const calculateToRecordCount = () => {
+    // State to track which dropdown is open
+    const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
+    // Handle click outside to close dropdown
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            // Check if the clicked element is not within any dropdown or three dots button
+            if (!target.closest('.dropdown-container')) {
+                setOpenDropdownId(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const toggleDropdown = (recordId: string) => {
+        setOpenDropdownId(openDropdownId === recordId ? null : recordId);
+    };
+
+    const calculateToRecordCount = () => {
         const to = ((currentPage > 1 ? currentPage - 1 : 0) * limit) + records.length
         return to;
     }
@@ -61,21 +83,37 @@ const ListTable: React.FC<ListTableInterface> = ({
                                             {fieldItem.dataType !== "action" && (recordItem[fieldItem.fieldName])}
                                             {fieldItem?.dataType === 'action' && fieldItem?.actions && fieldItem?.actions.length && (
                                                 <>
-                                                    <div className="flex mx-1">
-                                                        {/*  add three dots expandable icon and on click show the list of actions menu below */}
-                                                        {/* TODO add dotted options */}
-                                                        {/* <button className="block text-white bg-sky-700 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-2 mx-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+                                                    <div className="relative dropdown-container">
+                                                        {/* Three dots button */}
+                                                        <button 
+                                                            onClick={() => toggleDropdown(recordItem.id)} 
+                                                            className="inline-flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-300 rounded-full hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                                                             </svg>
+                                                        </button>
 
-                                                        </button> */}
-
-                                                        {fieldItem?.actions.map(actionItem => (
-                                                            <button onClick={(e) => { e.preventDefault(); actionItem.action(recordItem) }} type="button" className="block text-white bg-sky-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 mx-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer">
-                                                                {actionItem.buttonName}
-                                                            </button>
-                                                        ))}
+                                                        {/* Dropdown menu */}
+                                                        {openDropdownId === recordItem.id && (
+                                                            <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50 transition-all duration-200 ease-in-out transform origin-top-right animate-in fade-in zoom-in-95">
+                                                                <div className="py-1">
+                                                                    {fieldItem?.actions.map((actionItem, actionIndex) => (
+                                                                        <button 
+                                                                            key={actionIndex}
+                                                                            onClick={(e) => { 
+                                                                                e.preventDefault(); 
+                                                                                actionItem.action(recordItem);
+                                                                                setOpenDropdownId(null); // Close dropdown after action
+                                                                            }} 
+                                                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 focus:outline-none focus:bg-gray-100"
+                                                                        >
+                                                                            {actionItem.buttonName}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </>
                                             )}
