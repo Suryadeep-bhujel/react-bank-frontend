@@ -1,0 +1,64 @@
+# Docker Compose for React Bank Frontend Local Development
+# This file sets up the frontend and can be extended to include backend services
+
+version: '3.8'
+
+services:
+  # React Frontend Service
+  react-frontend:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: react-bank-frontend
+    ports:
+      - "3001:80"  # Map host port 3001 to container port 80
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - bank-app-network
+
+  # Placeholder for backend service (uncomment and configure when backend is ready)
+  # backend:
+  #   image: your-backend-image:latest
+  #   container_name: react-bank-backend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - DATABASE_URL=your-database-url
+  #   restart: unless-stopped
+  #   networks:
+  #     - bank-app-network
+  #   depends_on:
+  #     - database
+
+  # Placeholder for database service (uncomment and configure when needed)
+  # database:
+  #   image: postgres:15-alpine
+  #   container_name: react-bank-db
+  #   environment:
+  #     - POSTGRES_DB=bankapp
+  #     - POSTGRES_USER=bankuser
+  #     - POSTGRES_PASSWORD=bankpass
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+  #   networks:
+  #     - bank-app-network
+
+networks:
+  bank-app-network:
+    driver: bridge
+    name: bank-app-network
+
+# Uncomment when database is added
+# volumes:
+#   postgres_data:
+#     driver: local

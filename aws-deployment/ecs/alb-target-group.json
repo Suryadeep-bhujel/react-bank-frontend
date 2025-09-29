@@ -1,0 +1,44 @@
+{
+  "Name": "react-bank-frontend-tg",
+  "Protocol": "HTTP",
+  "Port": 80,
+  "VpcId": "vpc-12345678",
+  "TargetType": "ip",
+  "HealthCheckProtocol": "HTTP",
+  "HealthCheckPath": "/health",
+  "HealthCheckIntervalSeconds": 30,
+  "HealthCheckTimeoutSeconds": 10,
+  "HealthyThresholdCount": 2,
+  "UnhealthyThresholdCount": 3,
+  "Matcher": {
+    "HttpCode": "200"
+  },
+  "TargetGroupAttributes": [
+    {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "30"
+    },
+    {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+    },
+    {
+      "Key": "load_balancing.algorithm.type",
+      "Value": "round_robin"
+    }
+  ],
+  "Tags": [
+    {
+      "Key": "Name",
+      "Value": "react-bank-frontend-tg"
+    },
+    {
+      "Key": "Environment",
+      "Value": "production"
+    },
+    {
+      "Key": "Application",
+      "Value": "react-bank-frontend"
+    }
+  ]
+}
