@@ -1,0 +1,53 @@
+# Multi-stage Dockerfile for React frontend deployment on AWS ECS
+# This Dockerfile builds a React application and serves it with nginx
+
+# Build stage: Use Node.js to build the React application
+FROM node:18-alpine AS build
+
+# Set working directory
+WORKDIR /app
+
+# Add /app/node_modules/.bin to PATH for npm scripts
+ENV PATH /app/node_modules/.bin:$PATH
+
+# Copy package files and install dependencies
+# This is done first to leverage Docker layer caching
+COPY package*.json ./
+RUN npm ci --silent --only=production
+
+# Copy source code and build the application
+COPY . .
+
+# Set build environment
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
+# Build the React application (outputs to /app/dist by default with Vite)
+RUN npm run build:prod
+
+# Production stage: Use nginx to serve the built application
+FROM nginx:stable-alpine
+
+# Set environment variables
+ENV PORT=80
+EXPOSE 80
+
+# Remove default nginx configuration
+RUN rm -f /etc/nginx/conf.d/default.conf
+
+# Copy built React application from build stage (Vite outputs to 'dist' directory)
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy custom nginx configuration for SPA routing and optimization
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Ensure nginx can read the files and create necessary directories
+RUN chown -R nginx:nginx /usr/share/nginx/html \
+    && chmod -R 755 /usr/share/nginx/html
+
+# Add healthcheck for container monitoring
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost/health || exit 1
+
+# Start nginx in foreground mode
+CMD ["nginx", "-g", "daemon off;"]
