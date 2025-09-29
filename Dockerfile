@@ -23,7 +23,7 @@ ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
 
 # Build the React application (outputs to /app/dist by default with Vite)
-RUN npm run build
+RUN npm run build:prod
 
 # Production stage: Use nginx to serve the built application
 FROM nginx:stable-alpine

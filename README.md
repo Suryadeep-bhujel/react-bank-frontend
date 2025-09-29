@@ -1,11 +1,49 @@
-# React + TypeScript + Vite
+# React Bank Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based banking application frontend built with TypeScript, Vite, and TailwindCSS. This application provides a complete deployment solution for both local development and AWS ECS production deployment.
 
-Currently, two official plugins are available:
+## Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Local Development
+```bash
+npm install
+npm run dev
+```
+
+### Local Docker Development
+```bash
+# Build and run with Docker
+./docker-local.sh build
+./docker-local.sh run
+
+# Access at http://localhost:3001
+```
+
+### Production Build
+```bash
+npm run build:prod
+```
+
+## Deployment
+
+### AWS ECS Deployment
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment instructions.
+
+Quick AWS deployment:
+```bash
+# Setup AWS infrastructure
+cd aws-deployment
+./setup-infrastructure.sh
+
+# Deploy application
+./deploy.sh
+```
+
+### Local Docker with Backend
+```bash
+# Run with docker-compose (includes backend setup)
+docker-compose up -d
+```
 
 ## Expanding the ESLint configuration
 

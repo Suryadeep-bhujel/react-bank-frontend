@@ -8,7 +8,7 @@ services:
   react-frontend:
     build:
       context: .
-      dockerfile: DockerFile
+      dockerfile: Dockerfile
     container_name: react-bank-frontend
     ports:
       - "3001:80"  # Map host port 3001 to container port 80
