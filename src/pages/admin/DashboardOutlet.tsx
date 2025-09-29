@@ -30,7 +30,7 @@ const DashboardOutlet: React.FC = () => {
                         alt="User avatar"
                       />
                       <span className="text-sm font-medium text-gray-700">
-                        Admin
+                        Admin User
                       </span>
                     </button>
                     {isExpandedProfile && (
