@@ -2,14 +2,13 @@ import type { ListTableInterface, TableColumnStructure } from "@src/shared/Share
 import React, { useState, useEffect } from "react";
 import Pagination from "@shared/Pagination";
 import SearchWidget from "@src/pages/shared/SearchWidget";
-import { fi } from "@faker-js/faker";
+import { DateAndTimeService, DateFormatType } from "../../../@bank-app-common/service/date-service";
 const ListTable: React.FC<ListTableInterface> = ({
     tableColumns,
     records,
-    currentPage,
-    totalPages,
+    currentPage = 1,
+    totalPages = 0,
     limit,
-    actions,
     total,
     startFrom,
     paginationSpace = 'bottom',
@@ -44,9 +43,6 @@ const ListTable: React.FC<ListTableInterface> = ({
         const to = ((currentPage > 1 ? currentPage - 1 : 0) * limit) + records.length
         return to;
     }
-    const calculateFromRecordCount = () => {
-
-    }
     return (
         <>
             <SearchWidget
@@ -62,10 +58,11 @@ const ListTable: React.FC<ListTableInterface> = ({
                     currentPage={currentPage}
                     pageChanged={handlePageChange}
                     pageSizeChanged={handlePageSizeChange}
+                    limit={limit}
                 />
             }
-            <div className=" max-w-full overflow-x-scroll border rounded-lg shadow">
-                <table className="table-auto min-w-full overflow-scroll border-collapse border border-green-600">
+            <div className=" max-w-[100%] overflow-x-scroll">
+                <table className="table-auto min-w-full overflow-scroll border-collapse border">
                     <thead>
                         <tr className="bg-gray-200">
                             <th className="w-1/4 px-4 py-2 text-left whitespace-nowrap">S.N</th>
@@ -81,15 +78,27 @@ const ListTable: React.FC<ListTableInterface> = ({
                                     <td className="px-4 py-2 whitespace-nowrap">{(currentPage > 1 ? (currentPage - 1) * (limit || 100) : 1) + index}</td>
                                     {tableColumns.map((fieldItem: TableColumnStructure) => (
                                         <>
-                                            <td className="px-4 py-2">
-                                                {fieldItem.dataType !== "action" && (recordItem[fieldItem.fieldName])}
+                                            <td className=" whitespace-nowrap px-4 py-2">
+                                                {/* //convertToDate */}
+
+                                                {fieldItem.dataType !== "action" && (
+                                                    <>
+                                                        {fieldItem.dataType === 'date' && recordItem[fieldItem.fieldName] && (
+                                                            <>
+                                                                <span>{DateAndTimeService.convertToDateString(recordItem[fieldItem.fieldName], DateFormatType.DD_MM_YYYY)}
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                        {fieldItem.dataType !== 'date' && <span>{recordItem[fieldItem.fieldName]}</span>}
+                                                    </>
+                                                )}
                                                 {fieldItem?.dataType === 'action' && fieldItem?.actions && fieldItem?.actions.length && (
                                                     <>
                                                         <div className="relative dropdown-container">
                                                             {/* Three dots button */}
                                                             <button
                                                                 onClick={() => toggleDropdown(recordItem.id)}
-                                                                className="inline-flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-300 rounded-full hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+                                                                className="inline-flex items-center justify-center w-8 h-8 text-gray-500 bg-white border border-gray-300 rounded-full hover:text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 cursor-pointer"
                                                             >
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
@@ -108,7 +117,7 @@ const ListTable: React.FC<ListTableInterface> = ({
                                                                                     actionItem.action(recordItem);
                                                                                     setOpenDropdownId(null); // Close dropdown after action
                                                                                 }}
-                                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 focus:outline-none focus:bg-gray-100"
+                                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150 focus:outline-none focus:bg-gray-100 cursor-pointer"
                                                                             >
                                                                                 {actionItem.buttonName}
                                                                             </button>
@@ -138,6 +147,7 @@ const ListTable: React.FC<ListTableInterface> = ({
                     currentPage={currentPage}
                     pageChanged={handlePageChange}
                     pageSizeChanged={handlePageSizeChange}
+                    limit={limit}
                 />
             }
         </>
