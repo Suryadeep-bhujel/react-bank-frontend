@@ -13,7 +13,6 @@ const BankAccount: React.FC = () => {
         handlePageChange,
         limit,
         tableColumns,
-        actionItems,
         handleSearch
     } = useBankAccountState();
     const { currentPage, total, totalPages, startFrom } = search;
@@ -51,8 +50,6 @@ const BankAccount: React.FC = () => {
                     totalPages={totalPages}
                     currentPage={currentPage}
                     limit={limit}
-                    updatePermission={() => { }}
-                    actions={actionItems}
                     handleSearch={handleSearch}
                     startFrom={startFrom}
                     total={total}

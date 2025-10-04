@@ -1,11 +1,13 @@
 import { useLoading } from "@context/LoadingContext";
 import { BankAccountService } from "@src/openapi-request";
 import { SharedStatus } from "@bank-app-common/enum/SharedEnum";
-import type { FormStructure, SearchInterface } from "@src/shared/SharedInterface";
+import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { mapOptionLabel } from "@src/shared/SharedFunctions";
+import { BankAccountStatusType } from "../../@bank-app-common/enum/SharedEnum";
 const queryClient = new QueryClient();
 export interface BankAccountInterface {
     id?: number | null;
@@ -17,7 +19,7 @@ export interface BankAccountInterface {
     customerId?: string;
     createdAt?: string;
     updatedAt?: string;
-    customerOids?:string[]
+    customerOids?: string[]
 }
 
 export const useBankAccountState = () => {
@@ -27,10 +29,12 @@ export const useBankAccountState = () => {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
     const [bankAccountList, setBankAccountList] = useState<BankAccountInterface[]>([]);
-    
+
     useEffect(() => {
         getCustomersList();
     }, [search.currentPage, search.limit, search.fieldValue]);
+
+
     const getCustomersList = async () => {
         setIsLoading(true);
         const { data: response } = await BankAccountService.findAll(search)
@@ -38,7 +42,7 @@ export const useBankAccountState = () => {
             bankAccount.accountHolders = (bankAccount?.customers.map((customer: any) => {
                 return customer?.customer?.firstName + " " + customer?.customer?.lastName
             })).join(", ");
-            bankAccount.customerId = (bankAccount?.customers.map((customer: any) => {   
+            bankAccount.customerId = (bankAccount?.customers.map((customer: any) => {
                 return customer?.customer?.id
             })).join(", ");
             return bankAccount;
@@ -72,41 +76,42 @@ export const useBankAccountState = () => {
             limit: pageSize,
         }));
     }
-    const tableColumns: FormStructure[] = [
-        { label: "Account Number", fieldName: "accountNumber", dataType: "text", required: true, visible: true },
-        { label: "Account Type", fieldName: "accountType", dataType: "text", required: true, visible: true },
-        { label: "Balance", fieldName: "balance", dataType: "number", required: true, visible: true },
-        { label: "Account Holders", fieldName: "accountHolders", dataType: "array", required: false, visible: true },
-        { label: "Branch Name", fieldName: "branchName", dataType: "text", required: false, visible: true },
-        { label: "Branch Code", fieldName: "branchCode", dataType: "text", required: false, visible: true },
+    const tableColumns: TableColumnStructure[] = [
+        { label: "Account Number", fieldName: "accountNumber", dataType: "text", visible: true },
+        { label: "Account Type", fieldName: "accountType", dataType: "text", visible: true },
+        { label: "Balance", fieldName: "balance", dataType: "number", visible: true },
+        { label: "Account Holders", fieldName: "accountHolders", dataType: "array", visible: true },
+        { label: "Branch Name", fieldName: "branchName", dataType: "text", visible: true },
+        { label: "Branch Code", fieldName: "branchCode", dataType: "text", visible: true },
 
-        { label: "Currency", fieldName: "currency", dataType: "text", required: true, visible: true },
-        { label: "Customer ID", fieldName: "customerId", dataType: "text", required: true, visible: true },
-        { label: "Account Status", fieldName: "status", dataType: "options", required: true, visible: true, options: Object.values(SharedStatus).map(status => ({ label: status, value: status })) },
-        { label: "Created At", fieldName: "createdAt", dataType: "date", required: false, visible: false },
+        { label: "Currency", fieldName: "currency", dataType: "text", visible: true },
+        { label: "Customer ID", fieldName: "customerId", dataType: "text", visible: true },
+        { label: "Account Status", fieldName: "status", dataType: "options", visible: true, options: mapOptionLabel(BankAccountStatusType) },
+        { label: "Created At", fieldName: "createdAt", dataType: "date", visible: false },
 
-        { label: "Actions", fieldName: "action", dataType: "action", required: false, visible: false, actions: [] }
-    ]
-    const actionItems = [
         {
-            buttonName: "Edit",
-            action: "account/edit",
-            color: "blue",
-            icon: "fa fa-edit",
-            onClick: (recordItem: any) => {
-                // alert("hello")
-                navigate("/account/edit/" + recordItem._oid, { replace: true });
-                //    handleEditCustomer(recordItem._oid);
-            }
-        },
-        {
-            buttonName: "View",
-            action: "account/view",
-            color: "green",
-            icon: "fa fa-eye",
-            onClick: (recordItem: any) => {
-                navigate("/account/view/" + recordItem._oid, { replace: true });
-            }
+            label: "Actions", fieldName: "action", dataType: "action", visible: false, actions: [
+                {
+                    buttonName: "Edit",
+                    action: (recordItem: any) => {
+                        // alert("hello")
+                        navigate("/account/edit/" + recordItem._oid, { replace: true });
+                        //    handleEditCustomer(recordItem._oid);
+                    },
+                    color: "blue",
+                    icon: "fa fa-edit",
+                },
+                {
+                    buttonName: "View",
+                    action:(recordItem: any) => {
+                        // alert("hello")
+                        navigate("/account/view/" + recordItem._oid, { replace: true });
+                        //    handleEditCustomer(recordItem._oid);
+                    },
+                    color: "green",
+                    icon: "fa fa-eye",
+                }
+            ]
         }
     ]
     const handleSearch = (fieldName: string, fieldValue: string) => {
@@ -134,7 +139,6 @@ export const useBankAccountState = () => {
         handlePageChange,
         limit: search.limit || 20,
         tableColumns,
-        actionItems,
         handleSearch
     };
 }
