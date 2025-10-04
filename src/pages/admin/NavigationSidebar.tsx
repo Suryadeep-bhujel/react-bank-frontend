@@ -64,7 +64,7 @@ const NavigationSidebar: React.FC = () => {
                                         {/* Parent Menu Item */}
                                         <button
                                             onClick={() => toggleSubmenu(item.key)}
-                                            className="w-full flex items-center justify-between px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-200 hover:transform hover:scale-105 group"
+                                            className="w-full flex items-center justify-between px-4 py-3 text-gray-700 hover:text-blue-600 cursor-pointer hover:bg-blue-50 rounded-lg font-medium transition-all duration-200 hover:transform hover:scale-105 group"
                                         >
                                             <div className="flex items-center space-x-3">
                                                 <div
