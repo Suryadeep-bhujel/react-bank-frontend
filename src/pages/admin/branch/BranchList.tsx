@@ -16,7 +16,6 @@ const BranchList: React.FC = () => {
     startFrom,
     tableColumns,
     limit,
-    actionItems,
     errors,
     formTitle,
     formStructure,
@@ -55,7 +54,6 @@ const BranchList: React.FC = () => {
           totalPages={totalPages}
           currentPage={currentPage}
           limit={limit}
-          actions={actionItems}
           startFrom={startFrom}
           total={total}
           paginationSpace="top"

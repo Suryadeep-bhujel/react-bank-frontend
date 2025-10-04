@@ -105,6 +105,7 @@ export interface FormStructure {
     visible?: boolean;
     actions?: { name: string; action: string; color: string; icon: string }[];
     options?: string[] | { label: string; value: string }[];
+    multiSelect?: boolean;
     searchItems?: ({ }) => void;
     single?: boolean,
     onChange?: ({ }) => void;

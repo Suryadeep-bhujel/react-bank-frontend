@@ -84,12 +84,12 @@ const Pagination: React.FC<PaginationProps> = ({
                     </div>
                     <div>
                         <label htmlFor="pagination-page-size">Page Size</label>
-                        <select onChange={(e) => {
+                        <select defaultValue={limit} onChange={(e) => {
                             e.preventDefault()
                             onPageSizeChange(Number(e.target.value))
                         }} name="pagination-page-size" id="pagination-page-size">
                             {pagLimits && pagLimits.length && pagLimits.map((pageLimitVal, key) => (
-                                <option key={`page-size${key}`} value={pageLimitVal} defaultValue={pageLimitVal}>{pageLimitVal}</option>
+                                <option key={`page-size${key}`} value={pageLimitVal} defaultValue={limit}>{pageLimitVal}</option>
                             ))}
                         </select>
                     </div>

@@ -34,6 +34,12 @@ const DialogModal: React.FC<Props> = ({
         onSave(localForm);
     }
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("e.targete.targete.targete.target", e.target)
+        // if(Array.isArray(e.target)){
+        //     const value = e.target.map((item: any) => item.value)
+        //     setLocalForm(prev => ({ ...prev, [name]: value }));
+        //     return;
+        // }
         const { name, value } = e.target;
         setLocalForm(prev => ({ ...prev, [name]: value }));
     };
