@@ -28,16 +28,16 @@ export interface ColumnTypeInterface {
     required?: boolean;
 }
 export interface ListTableInterface {
-    tableColumns: ColumnTypeInterface[];
+    tableColumns: TableColumnStructure[];
     records: any[];
-    currentPage: number | null | undefined;
-    totalPages: number | null | undefined;
-    total?: number | null | undefined;
-    limit: number | null | undefined;
+    currentPage: number;
+    totalPages: number;
+    total?: number;
+    limit: number;
     actions?: any[];
-    startFrom?: number | null | undefined;
-    handlePageChange: ({ }) => void;
-    handlePageSizeChange: ({ }) => void;
+    startFrom?: number;
+    handlePageChange: (pageNo: number) => void;
+    handlePageSizeChange: (pageSize: number) => void;
     paginationSpace?: string;
     handleSearch: (fieldName: string, fieldValue: any) => void;
 }

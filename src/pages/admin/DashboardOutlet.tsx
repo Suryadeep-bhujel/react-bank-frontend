@@ -8,10 +8,10 @@ const DashboardOutlet: React.FC = () => {
   }
   return (
     <>
-      <div className="grid grid-cols-[16%_auto] min-h-screen bg-gray-50">
+      <div className="grid grid-cols-[16%_auto] min-h-screen min-w-0 bg-gray-50">
         <NavigationSidebar />
         <div className="fixed inset-0 bg-black bg-opacity-30 md:hidden z-30" />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col max-w-[100%] ovherflow-hidden overflow-scroll">
           <main>
             <div className="relative isolate ">
               <header className="w-full bg-white shadow px-4 py-3 flex justify-between items-center">

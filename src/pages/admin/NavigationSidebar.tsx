@@ -26,7 +26,9 @@ const NavigationSidebar: React.FC = () => {
             ...prev,
             [key]: !prev[key]
         }))
+        console.log("expandedMenusexpandedMenus", expandedMenus)
     }
+
     return (
         <>
             <div className="fixed z-40 md:static w-full lg:w-full bg-gradient-to-b from-white to-gray-50 shadow-xl border-r border-gray-200 transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
@@ -83,7 +85,7 @@ const NavigationSidebar: React.FC = () => {
                                             <div className="mt-2 mb-4 space-y-1 transition-all duration-300">
                                                 {item.subMenus.map((subItem: RouteType, subIndex) => (
                                                     <Link
-                                                        key={subIndex}
+                                                        key={`subItem-${subIndex}`}
                                                         to={subItem.path}
                                                         className={checkIsActiveSubRoute(subItem.path)}
                                                     >
