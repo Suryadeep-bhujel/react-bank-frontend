@@ -1,5 +1,6 @@
 import { PermissionsService } from "@src/openapi-request";
 import type { ColumnTypeInterface, SearchInterface } from "@src/shared/SharedInterface";
+import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react"
 export interface PermissionInterface {
     records: any[];
@@ -26,27 +27,18 @@ export const PermissionState = () => {
             fieldName: "group",
             dataType: "text",
         },
-        {
-            name: "Created Date",
-            fieldName: "createdAt",
-            dataType: "datetime",
-        },
-        {
-            name: "Updated Date",
-            fieldName: "updatedAt",
-            dataType: "datetime",
-        }
+        // {
+        //     name: "Created Date",
+        //     fieldName: "createdAt",
+        //     dataType: "datetime",
+        // },
+        // {
+        //     name: "Updated Date",
+        //     fieldName: "updatedAt",
+        //     dataType: "datetime",
+        // }
     ]
-    const [search, setSearchParams] = useState<SearchInterface>({
-        fieldName: '',
-        fieldValue: '',
-        limit: 20,
-        page: 1,
-        totalPages: 0,
-        total: 0,
-        currentPage: 1,
-        startFrom: 1
-    });
+    const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
     useEffect(() => {
         fetchListItems();
     }, []);

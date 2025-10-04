@@ -98,6 +98,38 @@ export class RoleService {
         });
     }
     /**
+     * @returns CommonListReponse
+     * @throws ApiError
+     */
+    public static roleDropdown({
+        fieldName,
+        fieldValue,
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+    }: {
+        fieldName?: string,
+        fieldValue?: string,
+        page?: number,
+        limit?: number,
+        sortBy?: string,
+        sortOrder?: string,
+    }): CancelablePromise<CommonListReponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/role/role-dropdown',
+            query: {
+                'fieldName': fieldName,
+                'fieldValue': fieldValue,
+                'page': page,
+                'limit': limit,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+            },
+        });
+    }
+    /**
      * @returns string
      * @throws ApiError
      */

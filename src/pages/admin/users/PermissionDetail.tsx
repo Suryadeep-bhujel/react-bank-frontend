@@ -3,8 +3,24 @@ import { Link } from "react-router-dom";
 import { PermissionOfRole } from "@states/RolePermissionState"
 import { PermissionState } from "@states/PermissionState";
 const PermissionDetail: React.FC = () => {
-    const { roleDetail, updateSelectedPermission, checkIfSelected, selectAllItems, selectGroupItems, savePermissions, selectedPermissions,updateRoleDetail } = PermissionOfRole()
-    const { permissionGroupedList , permissionCount } = PermissionState()
+    const { 
+        roleDetail, 
+        updateSelectedPermission, 
+        checkIfSelected, 
+        selectAllItems, 
+        selectGroupItems, 
+        savePermissions, 
+        selectedPermissions,
+        updateRoleDetail 
+    } = PermissionOfRole()
+
+
+
+    const { 
+        permissionGroupedList , 
+        permissionCount
+
+     } = PermissionState()
 
     return (
         <>

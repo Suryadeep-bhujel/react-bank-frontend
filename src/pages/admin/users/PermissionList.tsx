@@ -9,7 +9,7 @@ const PermissionList: React.FC = () => {
         records,
         search,
         isLoading, tableColumns } = PermissionState();
-        const { currentPage, total, totalPages, startFrom, limit } = search;
+    const { currentPage, total, totalPages, startFrom, limit } = search;
     return (
         <>
             <div className="">
@@ -19,7 +19,13 @@ const PermissionList: React.FC = () => {
                     </h1>
                 </div>
                 {/* content Area */}
-                <DataTableV1 tableColumns={tableColumns} records={records} totalPages={totalPages} currentPage={currentPage} limit={limit} />
+                <DataTableV1
+                    tableColumns={tableColumns}
+                    records={records}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    limit={limit}
+                    actions={[]} />
             </div>
         </>
     )

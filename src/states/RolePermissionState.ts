@@ -1,28 +1,17 @@
 import { useLoading } from "@src/context/LoadingContext";
 import { ApiError, RoleService } from "@src/openapi-request";
-import type { ColumnTypeInterface } from "@src/shared/SharedInterface";
+import type { ColumnTypeInterface, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
+import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
 // import { PermissionState } from "./PermissionState";
 import { toast } from "react-toastify";
-export interface Search {
-    fieldName?: string;
-    fieldValue?: string;
-    page?: number;
-    limit?: number;
-    sortBy?: string;
-    sortOrder?: string;
-    totalPages?: number;
-    total?: number;
-    currentPage?: number;
-    startFrom?: number;
-}
 export const RoleState = () => {
     const navigate = useNavigate()
     const [records, setListItems] = useState<any[]>([])
     const [isLoading, updateIsLoading] = useState<Boolean>(true)
     const { setIsLoading } = useLoading();
-    const tableColumns: ColumnTypeInterface[] = [
+    const tableColumns: TableColumnStructure[] = [
         {
             name: "ID",
             fieldName: "id",
@@ -52,6 +41,22 @@ export const RoleState = () => {
             name: "Actions",
             fieldName: "action",
             dataType: "action",
+            actions: [
+                {
+                    buttonName: "Edit",
+                    // dataType: "edit",
+                    action: (recordItem: any) => {
+                        navigate('/roles/edit-role/' + recordItem._oid);
+                    }
+                },
+                {
+                    buttonName: "Permissions",
+                    // buttonType: "permission",
+                    action: (recordItem: any) => {
+                        navigate('/role/permissions/' + recordItem._oid);
+                    }
+                }
+            ]
         }
         // {
         //     name: "Status", 
@@ -64,32 +69,8 @@ export const RoleState = () => {
         //     dataType: "action",
         // }
     ]
-    const actions = [
-        {
-            buttonName: "Edit",
-            buttonType: "edit",
-            onClick: (recordItem: any) => {
-                navigate('/roles/edit/' + recordItem._oid);
-            }
-        },
-        {
-            buttonName: "Permissions",
-            buttonType: "permission",
-            onClick: (recordItem: any) => {
-                navigate('/role/permissions/' + recordItem._oid);
-            }
-        }
-    ]
-    const [search, setSearchParams] = useState<Search>({
-        fieldName: '',
-        fieldValue: '',
-        limit: 20,
-        page: 1,
-        totalPages: 0,
-        total: 0,
-        currentPage: 1,
-        startFrom: 1
-    });
+
+    const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
     useEffect(() => {
         fetchListItems();
     }, [search.currentPage, search.limit]);
@@ -136,8 +117,7 @@ export const RoleState = () => {
         records,
         search,
         isLoading,
-        tableColumns,
-        actions
+        tableColumns
     }
 }
 
@@ -149,12 +129,13 @@ export const PermissionOfRole = () => {
     // const [rolesPermissions, setPermissions] = useState<Map<string, object[]>>(new Map())
     const [roleDetail, setRoleDetail] = useState<any>(null)
     const navigate = useNavigate()
-    const { oid } = useParams();
+    const { _oid: oid } = useParams();
     const getRoleDetail = async (roldOid: string) => {
         try {
+            console.log("roldOidroldOid", roldOid)
             setIsLoading(true)
-            const { data: roleItemReponse } = roldOid ? await RoleService.findOne({ oid: roldOid }) : { data: { permissions: null, role: null } };
-            if (!roleItemReponse) {
+            const { data: roleItemReponse } = oid ? await RoleService.findOne({ oid: oid }) : { data: { permissions: null, role: null } };
+            if (!roleItemReponse || !roleItemReponse.role) {
                 toast.warning("Role not found");
                 navigate("/roles")
             }
@@ -236,13 +217,13 @@ export const PermissionOfRole = () => {
         setIsLoading(true)
         try {
             let message = ''
-            if(roleDetail?._oid){
+            if (roleDetail?._oid) {
                 const response = await RoleService.updatePermissionOfRole({ oid: roleDetail._oid, requestBody: { permissionNames: Array.from(selectedPermissions) } })
-               message = response?.message
-            }else {
+                message = response?.message
+            } else {
                 console.log("roleDetailroleDetailroleDetail", roleDetail)
-               const response = await RoleService.create({ requestBody: {name: roleDetail?.name, permissionNames: Array.from(selectedPermissions) } })
-               message =  typeof response === 'object' ?  response?.message : 'Role added successfully.'
+                const response = await RoleService.create({ requestBody: { name: roleDetail?.name, permissionNames: Array.from(selectedPermissions) } })
+                message = typeof response === 'object' ? response?.message : 'Role added successfully.'
             }
             toast.success(message);
         } catch (error) {

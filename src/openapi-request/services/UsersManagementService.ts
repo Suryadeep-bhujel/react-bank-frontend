@@ -45,6 +45,23 @@ export class UsersManagementService {
      * @returns any
      * @throws ApiError
      */
+    public static getUserRoles({
+        userOid,
+    }: {
+        userOid: string,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/users/get-roles/{userOid}',
+            path: {
+                'userOid': userOid,
+            },
+        });
+    }
+    /**
+     * @returns any
+     * @throws ApiError
+     */
     public static assignUserRole({
         userOid,
         requestBody,

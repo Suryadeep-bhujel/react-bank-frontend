@@ -2,10 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DataTableV1 from "@shared/DataTableV1"
 import { RoleState } from "@states/RolePermissionState"
-import Pagination from "@src/pages/shared/Pagination";
 const RoleList: React.FC = () => {
 
-    const { records, handlePageChange, search, isLoading, handlePageSizeChange, tableColumns, actions, openPermissionPage } = RoleState()
+    const { records, handlePageChange, search, isLoading, handlePageSizeChange, tableColumns } = RoleState()
     const { currentPage, total, totalPages, startFrom, limit } = search;
     return (
         <>
@@ -16,7 +15,7 @@ const RoleList: React.FC = () => {
                     </h1>
                     <div className="text-gray-500 justify-end">
                         <Link
-                            to="/role/add-role"
+                            to="/roles/add-role"
                             className="bg-sky-600 text-white px-4 py-2 rounded hover:ring-gray-500"
                         >
                             Add Role
@@ -24,28 +23,17 @@ const RoleList: React.FC = () => {
                     </div>
                 </div>
                 {/* content Area */}
-                <DataTableV1 
-                tableColumns={tableColumns} 
-                records={records} 
-                totalPages={totalPages} 
-                currentPage={currentPage} 
-                limit={limit}
-                updatePermission={openPermissionPage}
-                actions={actions}
-                 >
-                    sdjfdslkfjv sdjfdslkfjsdjfdslkfjsdjfdslkfjsdjfdslkfj
-                 </DataTableV1>
-                {!isLoading && (
-                    <Pagination
-                        totalPages={totalPages}
-                        startFrom={startFrom}
-                        records={records.length}
-                        total={total}
-                        currentPage={currentPage}
-                        pageChanged={handlePageChange}
-                        pageSizeChanged={handlePageSizeChange}
-                    />
-                )}
+                <DataTableV1
+                    tableColumns={tableColumns}
+                    records={records}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    limit={limit}
+                    handlePageChange={handlePageChange}
+                    handlePageSizeChange={handlePageSizeChange}
+                    actions={[]}
+                />
+
             </div>
         </>
     );

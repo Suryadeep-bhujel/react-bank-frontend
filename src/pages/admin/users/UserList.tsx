@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Pagination from "../../shared/Pagination";
+import React from "react";
 import { useUserState } from "@src/states/UserState";
 import DataTableV1 from "@src/pages/shared/DataTableV1";
-import SearchWidget from "@src/pages/shared/SearchWidget";
-import type { TableColumns } from "@src/shared/SharedInterface";
 import { Link } from "react-router-dom";
+import DialogModal from "@src/pages/shared/DialogModal";
 const UserList: React.FC = () => {
     const {
         users,
@@ -13,12 +11,19 @@ const UserList: React.FC = () => {
         totalPages,
         startFrom,
         tableColumns,
-        actionItems,
         limit,
-        isLoading,
         handlePageChange,
         handlePageSizeChange,
-        handleSearch
+        handleSearch,
+        isDialogOpen,
+        roleDialogType,
+        roleFormTitle,
+        roleFormStructure,
+        roleFormModel,
+        roleErrors,
+        setIsDialogOpen,
+        handleRoleFormSubmit,
+        
     } = useUserState();
     return (
         <>
@@ -36,13 +41,24 @@ const UserList: React.FC = () => {
                     currentPage={currentPage}
                     limit={limit}
                     total={total}
-                    updatePermission={() => { }}
-                    actions={actionItems}
                     handleSearch={handleSearch}
                     startFrom={startFrom}
                     handlePageChange={handlePageChange}
                     handlePageSizeChange={handlePageSizeChange}
                 />
+                {isDialogOpen && (
+                    <DialogModal
+                        formModal={roleFormModel}
+                        formStructure={roleFormStructure}
+                        dialogType={roleDialogType}
+                        dialogTitle={roleFormTitle}
+                        isDialogOpen={isDialogOpen}
+                        onClose={() => setIsDialogOpen(false)}
+                        onSave={(data) => handleRoleFormSubmit(data)}
+                        formErrors={roleErrors}
+                        rows={1}
+                    />
+                )}
             </div>
         </>
     );
