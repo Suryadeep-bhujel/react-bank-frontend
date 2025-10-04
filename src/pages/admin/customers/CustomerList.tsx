@@ -102,8 +102,6 @@ const CustomerList: React.FC = () => {
                     totalPages={totalPages}
                     currentPage={currentPage}
                     limit={limit}
-                    updatePermission={() => { }}
-                    actions={actionItems}
                     handleSearch={handleSearch}
                     total={total}
                     startFrom={startFrom}

@@ -37,8 +37,10 @@ const Countries: React.FC = () => {
 
   const handleSaveCountry = async (formData: Record<string, any>) => {
     try {
-      await submitForm(formData);
-      setIsDialogOpen(false);
+      const response = await submitForm(formData);
+      if(response && response.success){
+        setIsDialogOpen(false);
+      }
     } catch (error) {
       console.error("Error saving country:", error);
       // Keep dialog open to show errors
