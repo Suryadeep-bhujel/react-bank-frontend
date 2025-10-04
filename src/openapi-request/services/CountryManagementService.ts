@@ -33,12 +33,32 @@ export class CountryManagementService {
      */
     public static findAll({
         requestBody,
+        fieldName,
+        fieldValue,
+        page,
+        limit,
+        sortBy,
+        sortOrder,
     }: {
         requestBody: CountrySearchDto,
+        fieldName?: string,
+        fieldValue?: string,
+        page?: number,
+        limit?: number,
+        sortBy?: string,
+        sortOrder?: string,
     }): CancelablePromise<CommonListReponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/country/list',
+            query: {
+                'fieldName': fieldName,
+                'fieldValue': fieldValue,
+                'page': page,
+                'limit': limit,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+            },
             body: requestBody,
             mediaType: 'application/json',
         });

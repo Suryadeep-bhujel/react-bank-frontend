@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react"
-import { CountryService } from "@openapi/CountryService";
-import type { FormStructure, TableColumnStructure } from "@src/shared/SharedInterface";
-import type { CreateCountryDto, UpdateCountryDto } from "@src/openapi-request";
+import { CountryManagementService } from "@openapi/CountryManagementService";
+import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
+import type { CreateCountryDto } from "@src/openapi-request";
+import { mapOptionLabel } from "@src/shared/SharedFunctions";
+import { CountryStatus, SanctionStatus } from "../../@bank-app-common/enum/SharedEnum";
+import { searchResetData } from "@src/shared/SharedResetData";
+import { toast } from "react-toastify";
+import { useLoading } from "@src/context/LoadingContext";
 export interface Search {
     fieldName?: string,
     fieldValue?: string,
@@ -29,16 +34,17 @@ export const useCountryState = () => {
     const [total, setTotal] = useState<number>(0)
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [startFrom, setStartFrom] = useState<number>(0)
-    const [isLoading, setIsLoading] = useState<Boolean>(true)
+    const { setIsLoading, isLoading } = useLoading();
     const [formTitle, setFormTitle] = useState("Add Country");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [dialogType, setDialogType] = useState<string>("add");
+    const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
 
-    const resetForm : CreateCountryDto = {
+    const resetForm: CreateCountryDto = {
         _oid: undefined,
         countryName: '',
         countryCode: '',
-        callCode: '',
+        dialCode: '',
         status: 'ACTIVE',
     }
     const [formModal, setFormModal] = useState<Record<string, any>>({ ...resetForm });
@@ -63,11 +69,11 @@ export const useCountryState = () => {
             single: true,
         },
         {
-            label: "Call Code",
-            fieldName: "callCode",
+            label: "Dial Code",
+            fieldName: "dialCode",
             dataType: "text",
             required: true,
-            placeholder: "Enter call code (e.g., +91)",
+            placeholder: "Enter dial code (e.g., +91)",
             visible: true,
             single: true,
         },
@@ -79,26 +85,27 @@ export const useCountryState = () => {
             placeholder: "Select status",
             visible: true,
             single: true,
-            options: [
-                { label: "Active", value: "ACTIVE" },
-                { label: "Inactive", value: "INACTIVE" }
-            ]
+            options: mapOptionLabel(CountryStatus)
         },
+        {
+            label: "Sanction Status",
+            fieldName: "sanctionStatus",
+            dataType: "options",
+            required: false,
+            placeholder: "Select Sanction Status",
+            visible: true,
+            single: true,
+            options: mapOptionLabel(SanctionStatus)
+        }
     ]
-
-    const [search, setSearchParams] = useState<Search>({
-        fieldName: '',
-        fieldValue: '',
-        limit: limit,
-        page: currentPage,
-    });
 
     const tableColumns: TableColumnStructure[] = [
         { label: "ID", fieldName: "id", dataType: "number", visible: true },
         { label: "Country Name", fieldName: "countryName", dataType: "text", visible: true },
         { label: "Country Code", fieldName: "countryCode", dataType: "text", visible: true },
-        { label: "Call Code", fieldName: "callCode", dataType: "text", visible: true },
+        { label: "Dial Code", fieldName: "dialCode", dataType: "text", visible: true },
         { label: "Status", fieldName: "status", dataType: "text", visible: true },
+        { label: "Sanction Status", fieldName: "sanctionStatus", dataType: "text", visible: true },
         {
             label: "Actions", fieldName: "actions", dataType: "action", visible: false, actions: [
                 {
@@ -133,72 +140,15 @@ export const useCountryState = () => {
     const getCountryList = async () => {
         try {
             // Mock data for demonstration since API is not available
-            const mockResponse = {
-                data: [
-                    { 
-                        id: 1, 
-                        _oid: "country_1", 
-                        countryName: "India", 
-                        countryCode: "IN", 
-                        callCode: "+91", 
-                        status: "ACTIVE" as const,
-                        createdAt: "2024-01-01",
-                        updatedAt: "2024-01-01"
-                    },
-                    { 
-                        id: 2, 
-                        _oid: "country_2", 
-                        countryName: "United States", 
-                        countryCode: "US", 
-                        callCode: "+1", 
-                        status: "ACTIVE" as const,
-                        createdAt: "2024-01-01",
-                        updatedAt: "2024-01-01"
-                    },
-                    { 
-                        id: 3, 
-                        _oid: "country_3", 
-                        countryName: "United Kingdom", 
-                        countryCode: "GB", 
-                        callCode: "+44", 
-                        status: "INACTIVE" as const,
-                        createdAt: "2024-01-01",
-                        updatedAt: "2024-01-01"
-                    },
-                    { 
-                        id: 4, 
-                        _oid: "country_4", 
-                        countryName: "Canada", 
-                        countryCode: "CA", 
-                        callCode: "+1", 
-                        status: "ACTIVE" as const,
-                        createdAt: "2024-01-01",
-                        updatedAt: "2024-01-01"
-                    },
-                    { 
-                        id: 5, 
-                        _oid: "country_5", 
-                        countryName: "Australia", 
-                        countryCode: "AU", 
-                        callCode: "+61", 
-                        status: "ACTIVE" as const,
-                        createdAt: "2024-01-01",
-                        updatedAt: "2024-01-01"
-                    }
-                ],
-                totalPages: 1,
-                total: 5,
-                currentPage: 1,
-                limit: 20
-            };
-
-            setCountryList(mockResponse?.data || []);
-            setTotalPages(mockResponse.totalPages || 0)
-            setTotal(mockResponse.total || 0)
-            setCurrentPage(mockResponse.currentPage || 1)
-            let startFrom = mockResponse.currentPage > 1 ? (mockResponse.currentPage - 1) * (search.limit || 100) : 1;
+            const { data: response } = await CountryManagementService.findAll(search);
+            setCountryList(response?.data);
+            setTotalPages(response.totalPages)
+            setTotal(response.total)
+            setCurrentPage(response.currentPage)
+            let startFrom = response.currentPage > 1 ? (response.currentPage - 1) * (search.limit || 100) : 1;
             setStartFrom(startFrom)
-            setLimit(mockResponse?.limit || 20);
+            setLimit(response?.limit);
+            setIsLoading(false)
         } catch (error) {
             console.error("Error fetching countries:", error);
             setCountryList([]);
@@ -236,33 +186,17 @@ export const useCountryState = () => {
     const submitForm = async (data: Record<string, any>) => {
         setIsLoading(true);
         try {
-            setIsLoading(true);
-            
-            // Mock implementation for demonstration
+            let response;
             if (data?._oid) {
-                // Simulate update existing country
-                console.log("Updating country:", data);
-                // Update the country in the list
-                setCountryList(prev => prev.map(country => 
-                    country._oid === data._oid ? { ...country, ...data } : country
-                ));
-                setFormModal(resetForm);
+                response = await CountryManagementService.update({ oid: data?._oid, requestBody: data });
             } else {
-                // Simulate create new country
-                console.log("Creating country:", data);
-                const newCountry = {
-                    ...data,
-                    id: Date.now(),
-                    _oid: `country_${Date.now()}`,
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString()
-                };
-                setCountryList(prev => [...prev, newCountry]);
-                setFormModal(resetForm);
+                response = await CountryManagementService.create({ requestBody: data as CreateCountryDto });
             }
-            
+            setFormModal(resetForm);
+            toast.success(response?.message || "Country Data saved successfully.");
+            await getCountryList();
             // Simulate API success response
-            return { success: true, message: "Country saved successfully" };
+            return { success: true, message: response?.message || "Country Data saved successfully." };
         } catch (error: any) {
             console.error("Error submitting form:", error);
             setErrors(error?.body?.message || error?.message || {});
