@@ -2,7 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CommonListReponse } from '../models/CommonListReponse';
 import type { CreateBranchManagerDto } from '../models/CreateBranchManagerDto';
+import type { ManagerSearchDto } from '../models/ManagerSearchDto';
 import type { UpdateBranchManagerDto } from '../models/UpdateBranchManagerDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -19,19 +21,45 @@ export class BranchManagerService {
     }): CancelablePromise<string> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/branch-manager',
+            url: '/api/branch-manager/add-branch-manager',
             body: requestBody,
             mediaType: 'application/json',
         });
     }
     /**
-     * @returns string
+     * @returns CommonListReponse
      * @throws ApiError
      */
-    public static findAll(): CancelablePromise<string> {
+    public static findAll({
+        requestBody,
+        fieldName,
+        fieldValue,
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+    }: {
+        requestBody: ManagerSearchDto,
+        fieldName?: string,
+        fieldValue?: string,
+        page?: number,
+        limit?: number,
+        sortBy?: string,
+        sortOrder?: string,
+    }): CancelablePromise<CommonListReponse> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/branch-manager',
+            query: {
+                'fieldName': fieldName,
+                'fieldValue': fieldValue,
+                'page': page,
+                'limit': limit,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
     /**

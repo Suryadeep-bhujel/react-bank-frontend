@@ -6,6 +6,8 @@ export type CreateCountryDto = {
     _oid?: string;
     countryName: string;
     countryCode: string;
-    callCode: string;
-    status: 'ACTIVE' | 'INACTIVE';
+    dialCode: string;
+    status?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'ON_HOLD' | 'BLACK_LISTED';
+    sanctionStatus?: 'SANCTIONED' | 'NOT_SANCTIONED' | 'PENDING' | 'UNDER_REVIEW' | 'CLEARED';
 };
+

@@ -63,6 +63,38 @@ export class UsersManagementService {
         });
     }
     /**
+     * @returns CommonListReponse
+     * @throws ApiError
+     */
+    public static userDropdown({
+        fieldName,
+        fieldValue,
+        page,
+        limit,
+        sortBy,
+        sortOrder,
+    }: {
+        fieldName?: string,
+        fieldValue?: string,
+        page?: number,
+        limit?: number,
+        sortBy?: string,
+        sortOrder?: string,
+    }): CancelablePromise<CommonListReponse> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/users/user-dropdown',
+            query: {
+                'fieldName': fieldName,
+                'fieldValue': fieldValue,
+                'page': page,
+                'limit': limit,
+                'sortBy': sortBy,
+                'sortOrder': sortOrder,
+            },
+        });
+    }
+    /**
      * @returns string
      * @throws ApiError
      */

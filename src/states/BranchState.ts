@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react"
 import { BranchManagementService } from "@openapi/BranchManagementService";
-import type { FormStructure, TableColumnStructure } from "@src/shared/SharedInterface";
+import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
 import { BranchStatus, BranchType } from "@bank-app-common/enum/branch-enum";
-import type { CreateBranchDto } from "@src/openapi-request";
-export interface Search {
-    fieldName?: string,
-    fieldValue?: string,
-    page?: number,
-    limit?: number,
-    sortBy?: string,
-    sortOrder?: string,
-}
+import { UsersManagementService, type CreateBranchDto } from "@src/openapi-request";
+import { searchResetData } from "@src/shared/SharedResetData";
 export const BranchState = () => {
     const [branchList, setBranchList] = useState<any[]>([])
     const [limit, setLimit] = useState<number>(20);
@@ -23,8 +16,9 @@ export const BranchState = () => {
     const [formTitle, setDialogTitle] = useState("Add Branch");
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [dialogType, setDialogType] = useState<string>("add");
+    const [userList, setUserList] = useState<any[]>([]);
 
-    const resetForm : CreateBranchDto = {
+    const resetForm: CreateBranchDto = {
         _oid: undefined,
         branchName: '',
         branchCode: '',
@@ -57,6 +51,25 @@ export const BranchState = () => {
             placeholder: "Enter branch code",
             visible: true,
             single: true,
+        },
+        {
+            label: "Branch Manager",
+            fieldName: "managerOid",
+            dataType: "options",
+            required: true,
+            placeholder: "Select branch Manager",
+            visible: true,
+            single: true,
+            options: userList.map(user => ({ label: user.fullName, value: user._oid })),
+            searchItems: (value: string) => {
+                setUserSearch(prev => ({
+                    ...prev,
+                    fieldName: 'fullName',
+                    fieldValue: value,
+                    page: 1
+                }))
+            },
+
         },
         {
             label: "Branch Address",
@@ -103,7 +116,7 @@ export const BranchState = () => {
             visible: true,
             single: true,
         },
-        
+
         {
             label: "Branch Type",
             fieldName: "branchType",
@@ -115,6 +128,8 @@ export const BranchState = () => {
             options: mapOptionLabel(BranchType)
 
         },
+
+
         {
             label: "Branch Status",
             fieldName: "branchStatus",
@@ -126,12 +141,8 @@ export const BranchState = () => {
             options: mapOptionLabel(BranchStatus)
         },
     ]
-    const [search, setSearchParams] = useState<Search>({
-        fieldName: '',
-        fieldValue: '',
-        limit: limit,
-        page: currentPage,
-    });
+    const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
+    const [userSearch, setUserSearch] = useState<SearchInterface>({ ...searchResetData, limit: 1000 });
     const tableColumns: TableColumnStructure[] = [
         { label: "ID", fieldName: "id", dataType: "number", visible: true },
         { label: "Branch Name", fieldName: "branchName", dataType: "text", visible: true },
@@ -171,6 +182,9 @@ export const BranchState = () => {
         setIsLoading(true);
         getBranchList();
     }, [search.fieldValue, search.limit, search.page]);
+    useEffect(() => {
+        getUsers()
+    }, [userSearch.fieldValue, userSearch.limit, userSearch.page]);
     const getBranchList = async () => {
         const { data: response } = await BranchManagementService.findAll(search)
         setBranchList(response?.data);
@@ -221,7 +235,7 @@ export const BranchState = () => {
                 setFormModal(resetForm);
             } else {
                 // Create new branch
-                response = await BranchManagementService.create({ requestBody: data });
+                response = await BranchManagementService.create({ requestBody: data as CreateBranchDto });
                 // Reset the form after successful creation
                 // toast.success("Branch created successfully!");
                 setFormModal(resetForm);
@@ -235,6 +249,11 @@ export const BranchState = () => {
         } finally {
             // setIsLoading(false);
         }
+    }
+    const getUsers = async () => {
+        const { data: response } = await UsersManagementService.userDropdown(userSearch);
+        setUserList(response?.data || []);
+        return response;
     }
     return {
         getBranchList,

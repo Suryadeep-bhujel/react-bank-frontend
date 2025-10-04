@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BranchState } from "@states/BranchState"
 // import Pagination from "@shared/Pagination";
 import DataTableV1 from "@src/pages/shared/DataTableV1";
-import { Link } from "react-router-dom";
 import DialogModal from "@shared/DialogModal";
 import { useDialogueState } from "@states/useDialogueState";
 const BranchList: React.FC = () => {
@@ -23,7 +22,6 @@ const BranchList: React.FC = () => {
     formStructure,
     dialogType,
     formModal,
-    resetForm,
     submitForm
   } = BranchState()
 
@@ -57,7 +55,6 @@ const BranchList: React.FC = () => {
           totalPages={totalPages}
           currentPage={currentPage}
           limit={limit}
-          updatePermission={() => { }}
           actions={actionItems}
           startFrom={startFrom}
           total={total}

@@ -20,6 +20,5 @@ export type AddressInfoRequestDto = {
     phoneNumber?: string;
     isDefault?: boolean;
     remarks?: string;
-    sameAddress?: boolean;
 };
 

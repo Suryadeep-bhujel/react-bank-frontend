@@ -13,6 +13,6 @@ export type CreateBranchDto = {
     branchDescription: string;
     branchType: string;
     branchStatus: string;
-    managerId?: number;
+    managerOid?: string;
 };
 
