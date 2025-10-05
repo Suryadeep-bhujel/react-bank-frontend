@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
-import { BankAccountStatusType } from "../../@bank-app-common/enum/SharedEnum";
+import { BankAccountStatusType } from "@bank-app-common/enum/SharedEnum";
 const queryClient = new QueryClient();
 export interface BankAccountInterface {
     id?: number | null;

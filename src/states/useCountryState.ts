@@ -3,7 +3,7 @@ import { CountryManagementService } from "@openapi/CountryManagementService";
 import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import type { CreateCountryDto } from "@src/openapi-request";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
-import { CountryStatus, SanctionStatus } from "../../@bank-app-common/enum/SharedEnum";
+import { CountryStatus, SanctionStatus } from "@bank-app-common/enum/SharedEnum";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { toast } from "react-toastify";
 import { useLoading } from "@src/context/LoadingContext";

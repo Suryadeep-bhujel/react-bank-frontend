@@ -162,7 +162,7 @@ export const CustomerState = () => {
             console.error("Error creating customer:", error?.body);
             setIsLoading(false);
             toast.error("Failed to create customer. Please try again.");
-            setErrors(error?.body?.message || error?.message || {});
+            setErrors(error?.[body]?.message || error?.message || {});
             return {
                 message: error?.body?.message ?? error.message,
                 success: false

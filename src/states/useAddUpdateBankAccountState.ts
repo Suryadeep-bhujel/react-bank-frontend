@@ -1,4 +1,4 @@
-import { SharedStatus, AccountType, PersonCaste, Occupation, MaritalStatus, EducationalQualification, ChooseOptions, DocumentType } from "@bank-app-common/enum/SharedEnum"
+import { SharedStatus, AccountType, PersonCaste, Occupation, MaritalStatus, EducationalQualification, ChooseOptions, DocumentType } from "@bank-app-common/enum/SharedEnum";
 import type { FormStructure, SearchInterface, SearchProps } from "@src/shared/SharedInterface"
 import type { BankAccountInterface } from "./useBankAccountState"
 import { useEffect, useState } from "react";
@@ -9,8 +9,8 @@ import type { CustomerInterface } from "./CustomerState";
 import { toast } from "react-toastify";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
 import { CountryList } from "@bank-app-common/shared-data/country-list"
-import { GenderType, PersonTitle } from "../../@bank-app-common/enum/SharedEnum";
-import { DateAndTimeService } from "../../@bank-app-common/service/date-service";
+import { GenderType, PersonTitle } from "@bank-app-common/enum/SharedEnum";
+import { DateAndTimeService } from "@bank-app-common/service/date-service";
 
 
 export const useAddUpdateBankAccountState = () => {
