@@ -1,11 +1,11 @@
 # ---------- dev (hot reload) ----------
-FROM node:20-alpine AS dev
+FROM node:20 AS dev
 WORKDIR /app
 # Copy only what's needed to install
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-RUN npm ci
+RUN npm install
 # Copy source explicitly (avoid .dockerignore surprises)
 COPY index.html ./
 COPY src ./src
@@ -16,12 +16,12 @@ COPY @bank-app-common ./@bank-app-common
 CMD ["npm","run","dev","--","--host"]
 
 # ---------- build (production build) ----------
-FROM node:20-alpine AS build
+FROM node:20 AS build
 WORKDIR /app
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-RUN npm ci
+RUN npm install
 # Copy source explicitly
 COPY index.html ./
 COPY src ./src
