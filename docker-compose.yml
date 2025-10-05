@@ -14,7 +14,19 @@ services:
       dockerfile: Dockerfile
       target: dev
     command: ["npm","run","dev","--","--host"]
-    volumes:
-      - .:/app
     ports:
-      - "5173:5173" # Vite default
+      - "5173:5173"   # Vite
+    environment:
+      # Helpful for file watching inside containers
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+      # ensure esbuild/rollup postinstall can run during image build (kept here for clarity)
+      npm_config_ignore_scripts: "false"
+    volumes:
+      - .:/app                 # your source
+      - /app/node_modules      # keep Linux node_modules in container (anonymous volume)
+      # optional: cache vite deps between runs (Linux-only path inside container)
+      - vite_cache:/app/node_modules/.vite
+
+volumes:
+  vite_cache:

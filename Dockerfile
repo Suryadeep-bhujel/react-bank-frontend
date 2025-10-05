@@ -1,35 +1,52 @@
-# ---------- dev (hot reload) ----------
-FROM node:20 AS dev
+# ---------- base (shared) ----------
+FROM node:20-bookworm-slim AS base
 WORKDIR /app
-# Copy only what's needed to install
+# Ensure postinstall scripts run (esbuild, rollup, etc.)
+ENV npm_config_ignore_scripts=false
+# Avoid noisy prompts
+ENV CI=true
+
+# ---------- dev (hot reload) ----------
+FROM base AS dev
+# Copy manifests first for caching
 COPY package*.json ./
+# If your local package is referenced via "file:./@bank-app-common" or workspaces,
+# it MUST be present before npm install:
+COPY @bank-app-common ./@bank-app-common
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-RUN npm install
-# Copy source explicitly (avoid .dockerignore surprises)
+
+# Clean install for reproducibility
+RUN npm ci
+
+# App sources
 COPY index.html ./
 COPY src ./src
 COPY public ./public
-COPY @bank-app-common ./@bank-app-common 
-# COPY openapi-request ./openapi-request
-# add any other needed folders here
+
+# Helpful when native binaries act up
+RUN npm rebuild esbuild && node -e "require('esbuild')"
+
 CMD ["npm","run","dev","--","--host"]
 
 # ---------- build (production build) ----------
-FROM node:20 AS build
-WORKDIR /app
+FROM base AS build
 COPY package*.json ./
+COPY @bank-app-common ./@bank-app-common
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-RUN npm install
-# Copy source explicitly
+RUN npm ci
+
 COPY index.html ./
 COPY src ./src
 COPY public ./public
-COPY @bank-app-common ./@bank-app-common
-# COPY openapi-request ./openapi-request
-# Optional: ensure TS has Node types at build time
+
+# Give node a bit more headroom during build
 ENV NODE_OPTIONS=--max-old-space-size=2048
+
+# Ensure esbuild binary is present in this layer
+RUN npm rebuild esbuild && node -e "require('esbuild')"
+
 RUN npm run build
 
 # ---------- runtime (nginx) ----------
