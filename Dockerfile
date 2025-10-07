@@ -1,30 +1,36 @@
 # ---------- base (shared) ----------
 FROM node:20-bookworm-slim AS base
 WORKDIR /app
-# Ensure postinstall scripts run (esbuild, rollup, etc.)
 ENV npm_config_ignore_scripts=false
-# Avoid noisy prompts
 ENV CI=true
+# build tools for native deps + git for husky/prepare
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git python3 make g++ \
+  && rm -rf /var/lib/apt/lists/*
+# prevent husky from running in CI
+ENV HUSKY=0
+
+# Optional: pass tokens if using private registry
+ARG NPM_TOKEN
+ENV NPM_TOKEN=${NPM_TOKEN}
 
 # ---------- dev (hot reload) ----------
 FROM base AS dev
 # Copy manifests first for caching
 COPY package*.json ./
-# If your local package is referenced via "file:./@bank-app-common" or workspaces,
-# it MUST be present before npm install:
+# local package must be present BEFORE install
 COPY @bank-app-common ./@bank-app-common
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-
-# Clean install for reproducibility
-RUN npm ci
+# Verbose logs help
+RUN npm ci --foreground-scripts --no-audit --no-fund --loglevel=verbose
 
 # App sources
 COPY index.html ./
 COPY src ./src
 COPY public ./public
 
-# Helpful when native binaries act up
+# Ensure esbuild binary is healthy
 RUN npm rebuild esbuild && node -e "require('esbuild')"
 
 CMD ["npm","run","dev","--","--host"]
@@ -35,18 +41,14 @@ COPY package*.json ./
 COPY @bank-app-common ./@bank-app-common
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-RUN npm ci
+RUN npm ci --foreground-scripts --no-audit --no-fund --loglevel=verbose
 
 COPY index.html ./
 COPY src ./src
 COPY public ./public
 
-# Give node a bit more headroom during build
 ENV NODE_OPTIONS=--max-old-space-size=2048
-
-# Ensure esbuild binary is present in this layer
 RUN npm rebuild esbuild && node -e "require('esbuild')"
-
 RUN npm run build
 
 # ---------- runtime (nginx) ----------
