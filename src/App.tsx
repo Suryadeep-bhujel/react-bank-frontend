@@ -14,6 +14,7 @@ import MyProfile from "@src/pages/admin/profile/MyProfile";
 const Home: React.FC = () => {
     // const [count, setCount] = useState(0);
     //   const { formData, handleChange, handleSubmit } = useContactForm();
+    console.log("uncomment React.strictMode in main.tsx to do prod deployment");
     return (
         <>
             <div className="relative isolate px-6 lg:px-12">

@@ -20,6 +20,7 @@ FROM base AS build
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY vite.config.* ./
+COPY @bank-app-common ./@bank-app-common
 # Copy local package BEFORE install (critical for file:/ workspaces)
 COPY @bank-app-common ./@bank-app-common
 
