@@ -26,7 +26,8 @@
     "react-toastify": "^11.0.5",
     "swagger-ui": "^5.22.0",
     "swagger-ui-react": "^5.22.0",
-    "tailwindcss": "^4.1.7"
+    "tailwindcss": "^4.1.7",
+    "@bank-app-common": "github.com/Suryadeep-bhujel/bank-app-common"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
