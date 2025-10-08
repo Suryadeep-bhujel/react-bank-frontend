@@ -14,7 +14,7 @@ import MyProfile from "@src/pages/admin/profile/MyProfile";
 const Home: React.FC = () => {
     // const [count, setCount] = useState(0);
     //   const { formData, handleChange, handleSubmit } = useContactForm();
-    console.log("uncomment React.strictMode in main.tsx to do prod deployment");
+    // console.log("uncomment React.strictMode in main.tsx to do prod deployment");
     return (
         <>
             <div className="relative isolate px-6 lg:px-12">
@@ -103,20 +103,6 @@ const App: React.FC = () => {
                                 }
                                 )}
                                 <Route path="my-profile" element={<MyProfile />} />
-                                {/* <Route path="dashboard" element={<Dashboard />} />
-                                <Route path="branch-list" element={<BranchList />} />
-                                <Route path="branch-managers" element={<BranchManagerList />} />
-                                <Route path="user-list" element={<UserList />} />
-                                <Route path="roles" element={<RoleList />} />
-                                <Route path="role/permissions/:oid" element={<PermissionDetail />} />
-                                <Route path="role/add-role" element={<PermissionDetail />} />
-                                <Route path="permissions" element={<PermissionList />} />
-                                <Route path="customer-list" element={<CustomerList />} />
-                                <Route path="customer-applications" element={<CustomerApplicationList />} />
-                                <Route path="country-list" element={<Countries />} />
-                                <Route path="accounts" element={<BankAccount />} />
-                                <Route path="accounts/add" element={<AddUpdateBankAccount />} />
-                                <Route path="account/edit/:_oid" element={<AddUpdateBankAccount />} /> */}
                             </Route>
                         </Routes>
                     </Router>
