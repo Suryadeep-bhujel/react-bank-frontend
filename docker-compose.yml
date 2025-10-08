@@ -15,17 +15,14 @@ services:
       target: dev
     command: ["npm","run","dev","--","--host"]
     ports:
-      - "5173:5173"   # Vite
+      - "5173:5173"
     environment:
-      # Helpful for file watching inside containers
       CHOKIDAR_USEPOLLING: "true"
       WATCHPACK_POLLING: "true"
-      # ensure esbuild/rollup postinstall can run during image build (kept here for clarity)
       npm_config_ignore_scripts: "false"
     volumes:
-      - .:/app                 # your source
-      - /app/node_modules      # keep Linux node_modules in container (anonymous volume)
-      # optional: cache vite deps between runs (Linux-only path inside container)
+      - .:/app
+      - /app/node_modules
       - vite_cache:/app/node_modules/.vite
 
 volumes:
