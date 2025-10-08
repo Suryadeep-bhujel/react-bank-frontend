@@ -1,12 +1,12 @@
 export interface SearchInterface {
     fieldName?: string;
     fieldValue?: string;
-    page?: number;
+    page: number;
     limit?: number;
     sortBy?: string;
     sortOrder?: string;
-    totalPages?: number;
-    total?: number;
+    totalPages: number;
+    total: number;
     currentPage?: number;
     startFrom?: number;
 }
@@ -30,10 +30,10 @@ export interface ColumnTypeInterface {
 export interface ListTableInterface {
     tableColumns: TableColumnStructure[];
     records: any[];
-    currentPage: number;
+    currentPage?: number;
     totalPages: number;
     total?: number;
-    limit: number;
+    limit?: number;
     actions?: any[];
     startFrom?: number;
     handlePageChange: (pageNo: number) => void;
@@ -84,7 +84,7 @@ export interface TabPanelProps {
 }
 export interface ActionInterface {
     buttonName: string;
-    action: ({ }) => void;
+    action: (record: any) => void;
     color?: string;
     icon?: string
 }
@@ -95,6 +95,7 @@ export interface TableColumnStructure {
     dataType: string;
     actions?: ActionInterface[];
     visible?: boolean;
+    options?: string[] | { label: string; value: string }[];
 
 };
 export interface FormStructure {
@@ -106,7 +107,7 @@ export interface FormStructure {
     actions?: { name: string; action: string; color: string; icon: string }[];
     options?: string[] | { label: string; value: string }[];
     multiSelect?: boolean;
-    searchItems?: ({ }) => void;
+    searchItems?: (params: any) => void;
     single?: boolean,
     onChange?: ({ }) => void;
     disabled?: boolean

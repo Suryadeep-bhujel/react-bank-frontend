@@ -2,7 +2,7 @@ import type { PaginationProps } from "@src/shared/SharedInterface";
 import React from "react";
 
 const Pagination: React.FC<PaginationProps> = ({
-    totalPages,
+    totalPages = 0,
     startFrom,
     records,
     total,
@@ -12,32 +12,32 @@ const Pagination: React.FC<PaginationProps> = ({
     limit = 20
 }) => {
     const generatePages = () => {
-        const pages = [];
+        const pages: string[] = [];
         const maxShown = 10;
 
         if (totalPages <= maxShown) {
             for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
+                pages.push(i?.toString());
             }
         } else {
             const left = Math.max(2, currentPage - 1);
             const right = Math.min(totalPages - 1, currentPage + 1);
 
-            pages.push(1);
+            pages.push("1");
 
             if (left > 2) {
                 pages.push("...");
             }
 
             for (let i = left; i <= right; i++) {
-                pages.push(i);
+                pages.push(i?.toString());
             }
 
             if (right < totalPages - 1) {
                 pages.push("...");
             }
 
-            pages.push(totalPages);
+            pages.push(totalPages.toString());
         }
 
         return pages;
@@ -128,7 +128,7 @@ const Pagination: React.FC<PaginationProps> = ({
                                         e.preventDefault();
                                         if (page !== '...') onPageChange(Number(page));
                                     }}
-                                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${currentPage === page ? 'bg-indigo-400' : ''}`}
+                                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${Number(currentPage) === Number(page) ? 'bg-indigo-400' : ''}`}
                                 >
                                     {page}
                                 </a>

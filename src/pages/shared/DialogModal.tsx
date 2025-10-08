@@ -16,7 +16,6 @@ const DialogModal: React.FC<Props> = ({
     isDialogOpen,
     onClose,
     onSave,
-    dialogType,
     dialogTitle,
     formStructure,
     formModal,

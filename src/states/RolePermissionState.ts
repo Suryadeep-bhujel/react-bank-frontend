@@ -1,6 +1,6 @@
 import { useLoading } from "@src/context/LoadingContext";
 import { ApiError, RoleService } from "@src/openapi-request";
-import type { ColumnTypeInterface, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
+import type { SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom";
@@ -226,14 +226,14 @@ export const PermissionOfRole = () => {
                 message = typeof response === 'object' ? response?.message : 'Role added successfully.'
             }
             toast.success(message);
-        } catch (error) {
+        } catch (error: any) {
             toast.error(error?.message);
             console.log("error is ", error?.message)
         }
         setIsLoading(false)
     }
-    const updateRoleDetail = (detail: Partial<T>) => {
-        setRoleDetail((prev) => ({ ...prev, ...detail }))
+    const updateRoleDetail = <T>(detail: Partial<T>) => {
+        setRoleDetail((prev: any) => ({ ...prev, ...detail }))
     }
     return {
         getRoleDetail,

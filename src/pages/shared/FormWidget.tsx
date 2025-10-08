@@ -1,12 +1,12 @@
 import type { FormStructure } from "@src/shared/SharedInterface";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Select from 'react-select'
-import { DateAndTimeService } from "@bank-app-common/service/date-service";
+// import { DateAndTimeService } from "@bank-app-common/service/date-service";
 
 type Props = {
     // onClose?: () => void;
     // onSave: ({ }) => void;
-    onInputChange: ({ }) => void;
+    onInputChange: (params:any) => void;
     dialogTitle?: string;
     formStructure: FormStructure[];
     // formInputs?: any;
@@ -22,10 +22,10 @@ const FormWidget: React.FC<Props> = ({
     formErrors,
     rows = 4
 }) => {
-    const handleSelectKeydown = (e: Event, field: FormStructure) => {
+    const handleSelectKeydown = (e: any, field: FormStructure) => {
         // onInputChange({ target: { name: fieldName, value: selectedOption?.value } })
         const nextValue =
-            e.key.length === 1 // if it's a normal character
+            e?.key?.length === 1 // if it's a normal character
                 ? e.target.value + e.key
                 : e.key === "Backspace"
                     ? e.target.value.slice(0, -1)
@@ -33,7 +33,7 @@ const FormWidget: React.FC<Props> = ({
 
         field.searchItems ? field.searchItems(nextValue) : undefined;
     }
-    const handleSelectOnChange = (event, field: FormStructure) => {
+    const handleSelectOnChange = (event:any, field: FormStructure) => {
         if (Array.isArray(event)) {
             console.log("eventeventeventevent", event)
             console.log("eventeventeventeventfield.fieldName", event)

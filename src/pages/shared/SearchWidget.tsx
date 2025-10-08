@@ -51,7 +51,7 @@ const SearchWidget: React.FC<{
                         {selectedFieldOption?.dataType === "options" && (
                             <select
                                 value={searchValue}
-                                onChange={handleValueChange}
+                                onChange={(e: any) => handleValueChange(e)}
                                 className="border border-gray-300 rounded px-2 py-1 flex-grow"
                             >
                                 <option value="">Select {selectedFieldOption?.label}</option>

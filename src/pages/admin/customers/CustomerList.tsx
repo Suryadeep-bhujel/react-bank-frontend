@@ -46,14 +46,14 @@ const CustomerList: React.FC = () => {
         setCustomerForm({ ...resetCustomerForm });
         dialogType = "add";
         setIsDialogOpen(true);
-        setErrors("")
+        setErrors({})
     }
-    const handleEditCustomer = (customerOid: string) => {
+    const handleEditCustomer = (customerOid: string | undefined) => {
         let customerRecord = customerList.find((customerItem) => customerItem?._oid === customerOid);
         if (customerRecord) {
             customerRecord.dateOfBirth = customerRecord?.dateOfBirth?.split("T")?.[0];
             customerForm = customerRecord;
-            setErrors("")
+            setErrors({})
             setCustomerForm({ ...customerRecord });
             dialogType = "edit";
             setDialogTitle("Edit Customer");
@@ -67,7 +67,7 @@ const CustomerList: React.FC = () => {
             color: "blue",
             icon: "fa fa-edit",
             onClick: (recordItem: CustomerInterface) => {
-                handleEditCustomer(recordItem._oid);
+                handleEditCustomer(recordItem?._oid);
             }
         }
     ]
@@ -86,7 +86,7 @@ const CustomerList: React.FC = () => {
 
                 {isDialogOpen && (
                     <DialogModal
-                        formInputs={customerForm}
+                        formModal={customerForm}
                         formStructure={customerStructure}
                         dialogType={dialogType}
                         dialogTitle={dialogTitle}

@@ -54,7 +54,7 @@ export const PermissionState = () => {
         }))
         setPermissionCounts(response.length)
         const permissionMap: Map<string, object[]> = new Map();
-        response?.sort((a, b) => a?.group.localeCompare(b?.group))?.forEach((item: any) => {
+        response?.sort((a: any, b: any) => a?.group.localeCompare(b?.group))?.forEach((item: any) => {
             const groupKey = item.group;
             if (!permissionMap.has(groupKey)) {
                 permissionMap.set(groupKey, []);

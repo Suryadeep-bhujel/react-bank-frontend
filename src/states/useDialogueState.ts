@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react"
+import { useState } from "react"
 
 export const useDialogueState = () => {
     const [isDialogOpen, setIsOpened] = useState<boolean>(false)

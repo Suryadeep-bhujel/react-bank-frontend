@@ -3,24 +3,24 @@ import { Link } from "react-router-dom";
 import { PermissionOfRole } from "@states/RolePermissionState"
 import { PermissionState } from "@states/PermissionState";
 const PermissionDetail: React.FC = () => {
-    const { 
-        roleDetail, 
-        updateSelectedPermission, 
-        checkIfSelected, 
-        selectAllItems, 
-        selectGroupItems, 
-        savePermissions, 
+    const {
+        roleDetail,
+        updateSelectedPermission,
+        checkIfSelected,
+        selectAllItems,
+        selectGroupItems,
+        savePermissions,
         selectedPermissions,
-        updateRoleDetail 
+        updateRoleDetail
     } = PermissionOfRole()
 
 
 
-    const { 
-        permissionGroupedList , 
+    const {
+        permissionGroupedList,
         permissionCount
 
-     } = PermissionState()
+    } = PermissionState()
 
     return (
         <>
@@ -46,14 +46,14 @@ const PermissionDetail: React.FC = () => {
                         id="RoleName"
                         value={roleDetail?.name}
                         onChange={(e) =>
-                            updateRoleDetail(() => ({name: e.target.value }))
+                            updateRoleDetail(() => ({ name: e.target.value }))
                         }
                         className="form-input mt-2 mb-2 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     />
-                    
+
                 </label>
                 <label className="items-center space-x-2 mb-2 block cursor-pointer">
-                    <input type="checkbox" onClick={(e) => {
+                    <input type="checkbox" onClick={(e: any) => {
                         selectAllItems(e.target?.checked ? permissionGroupedList : new Map())
                     }} checked={permissionCount === selectedPermissions.size} className="form-checkbox h-5 w-5 text-blue-600 rounded cursor-pointer" />
                     <span className="text-gray-700">Select All Permission</span>
@@ -64,18 +64,18 @@ const PermissionDetail: React.FC = () => {
                             <div key={group} className=" p-8">
                                 <h3 className="font-semibold text-lg mb-2 capitalize">
                                     <label key={group} className="items-center space-x-2 mb-2 block cursor-pointer">
-                                        <input onClick={(e) => {
+                                        <input onClick={(e: any) => {
                                             selectGroupItems(e.target.checked, group)
                                         }} type="checkbox" className="form-checkbox h-5 w-5 text-blue-600 rounded cursor-pointer" />
                                         <span className="text-gray-700"> {group}</span>
                                     </label>
                                 </h3>
                                 <div>
-                                    {permissions.map((permission) => (
-                                        <label key={permission.id} className="items-center space-x-2 mb-2 block cursor-pointer">
+                                    {permissions.map((permission: any) => (
+                                        <label key={permission?.id} className="items-center space-x-2 mb-2 block cursor-pointer">
                                             <input type="checkbox"
-                                                checked={checkIfSelected(permission.name)}
-                                                onChange={() => updateSelectedPermission(permission.name)}
+                                                checked={checkIfSelected(permission?.name)}
+                                                onChange={() => updateSelectedPermission(permission?.name)}
                                                 className="form-checkbox h-5 w-5 text-blue-600 rounded cursor-pointer" />
                                             <span className="text-gray-700">{permission.name}</span>
                                         </label>

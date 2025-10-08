@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { RoleService, UsersManagementService } from "@src/openapi-request";
 import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
@@ -21,8 +21,8 @@ export const useUserState = () => {
     const [startFrom, setTstartFrom] = useState<number>(0)
     const [search, setSearchParams] = useState<SearchInterface>(searchResetData);
     const [userRoles, setUserRoles] = useState<string[]>([]);
-    const [roleDialogType, setRoleDialogType] = useState<string>("Update User Role's");
-    const [roleFormTitle, setRoleFormTitle] = useState<string>("Update User Role's");
+    const [roleDialogType] = useState<string>("Update User Role's");
+    const [roleFormTitle] = useState<string>("Update User Role's");
     const [roleErrors, setRoleFormErrors] = useState<string[]>([])
     const [roleFormModel, setRoleFormModal] = useState<Record<string, any>>({
         roles: [],
@@ -85,8 +85,8 @@ export const useUserState = () => {
     }
     const getAllRoles = async () => {
         const { data: response } = await RoleService.roleDropdown(search);
-        setRoleList(response.data?.map(role => {
-            return { label: role.name, value: role.name }
+        setRoleList(response.data?.map((role: any) => {
+            return { label: role?.name, value: role?.name }
         }));
     }
     const handlePageChange = async (pageNo: number) => {
@@ -152,7 +152,7 @@ export const useUserState = () => {
         try {
             setIsLoading(true)
             const response = await UsersManagementService.assignUserRole({ userOid: formBody._oid, requestBody: { roles: formBody.roles } })
-            if(!response.success){
+            if (!response.success) {
                 setRoleFormErrors(response?.body?.message || response?.message || {});
             }
             else {
@@ -162,7 +162,7 @@ export const useUserState = () => {
             setIsDialogOpen(false)
             console.log("sdjfkljfs", response)
             setIsLoading(false)
-        } catch (error) {
+        } catch (error: any) {
             setRoleFormErrors(error?.body?.message || error?.message || {});
         }
 

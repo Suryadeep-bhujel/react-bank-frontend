@@ -141,7 +141,7 @@ export const useCountryState = () => {
         try {
             // Mock data for demonstration since API is not available
             const { data: response } = await CountryManagementService.findAll(search);
-            setCountryList(response?.data);
+            setCountryList(response?.data as CountryInterface[] || []);
             setTotalPages(response.totalPages)
             setTotal(response.total)
             setCurrentPage(response.currentPage)

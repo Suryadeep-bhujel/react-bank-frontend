@@ -1,14 +1,9 @@
 import { useLoading } from "@context/LoadingContext";
 import { BankAccountService } from "@src/openapi-request";
-import { SharedStatus } from "@bank-app-common/enum/SharedEnum";
-import type { FormStructure, SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
+import type { SearchInterface, TableColumnStructure } from "@src/shared/SharedInterface";
 import { searchResetData } from "@src/shared/SharedResetData";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { mapOptionLabel } from "@src/shared/SharedFunctions";
-import { BankAccountStatusType } from "@bank-app-common/enum/SharedEnum";
-const queryClient = new QueryClient();
 export interface BankAccountInterface {
     id?: number | null;
     _oid?: string;
@@ -86,7 +81,7 @@ export const useBankAccountState = () => {
 
         { label: "Currency", fieldName: "currency", dataType: "text", visible: true },
         { label: "Customer ID", fieldName: "customerId", dataType: "text", visible: true },
-        { label: "Account Status", fieldName: "status", dataType: "options", visible: true, options: mapOptionLabel(BankAccountStatusType) },
+        { label: "Account Status", fieldName: "status", dataType: "options", visible: true },
         { label: "Created At", fieldName: "createdAt", dataType: "date", visible: false },
 
         {

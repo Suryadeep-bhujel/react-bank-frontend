@@ -32,7 +32,6 @@ export class CountryManagementService {
      * @throws ApiError
      */
     public static findAll({
-        requestBody,
         fieldName,
         fieldValue,
         page,
@@ -40,7 +39,6 @@ export class CountryManagementService {
         sortBy,
         sortOrder,
     }: {
-        requestBody: CountrySearchDto,
         fieldName?: string,
         fieldValue?: string,
         page?: number,
@@ -59,7 +57,6 @@ export class CountryManagementService {
                 'sortBy': sortBy,
                 'sortOrder': sortOrder,
             },
-            body: requestBody,
             mediaType: 'application/json',
         });
     }

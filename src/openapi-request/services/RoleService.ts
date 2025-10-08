@@ -81,23 +81,6 @@ export class RoleService {
         });
     }
     /**
-     * @returns RoleDetailResponseDto
-     * @throws ApiError
-     */
-    public static findOne({
-        oid,
-    }: {
-        oid: string,
-    }): CancelablePromise<RoleDetailResponseDto> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/role/{oid}',
-            path: {
-                'oid': oid,
-            },
-        });
-    }
-    /**
      * @returns CommonListReponse
      * @throws ApiError
      */
@@ -126,6 +109,23 @@ export class RoleService {
                 'limit': limit,
                 'sortBy': sortBy,
                 'sortOrder': sortOrder,
+            },
+        });
+    }
+    /**
+     * @returns RoleDetailResponseDto
+     * @throws ApiError
+     */
+    public static findOne({
+        oid,
+    }: {
+        oid: string,
+    }): CancelablePromise<RoleDetailResponseDto> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/role/{oid}',
+            path: {
+                'oid': oid,
             },
         });
     }

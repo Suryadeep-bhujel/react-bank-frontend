@@ -8,7 +8,7 @@ const ListTable: React.FC<ListTableInterface> = ({
     records,
     currentPage = 1,
     totalPages = 0,
-    limit,
+    limit = 20,
     total,
     startFrom,
     paginationSpace = 'bottom',
@@ -40,7 +40,7 @@ const ListTable: React.FC<ListTableInterface> = ({
     };
 
     const calculateToRecordCount = () => {
-        const to = ((currentPage > 1 ? currentPage - 1 : 0) * limit) + records.length
+        const to = ((currentPage > 1 ? currentPage - 1 : 0) * (limit || 20)) + records.length
         return to;
     }
     return (

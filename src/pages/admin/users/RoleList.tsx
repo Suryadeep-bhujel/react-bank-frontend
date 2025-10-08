@@ -6,6 +6,9 @@ const RoleList: React.FC = () => {
 
     const { records, handlePageChange, search, isLoading, handlePageSizeChange, tableColumns } = RoleState()
     const { currentPage, total, totalPages, startFrom, limit } = search;
+    const handleSearch = (fieldName: string, fieldValue: any) => {
+        console.log("Searching for", fieldName, fieldValue);
+    }
     return (
         <>
             <div className="">
@@ -24,6 +27,7 @@ const RoleList: React.FC = () => {
                 </div>
                 {/* content Area */}
                 <DataTableV1
+                    handleSearch={handleSearch}
                     tableColumns={tableColumns}
                     records={records}
                     totalPages={totalPages}

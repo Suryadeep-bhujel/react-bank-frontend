@@ -13,9 +13,9 @@ export const BranchState = () => {
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [startFrom, setTstartFrom] = useState<number>(0)
     const [isLoading, setIsLoading] = useState<Boolean>(true)
-    const [formTitle, setDialogTitle] = useState("Add Branch");
+    const [formTitle] = useState("Add Branch");
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [dialogType, setDialogType] = useState<string>("add");
+    const [dialogType] = useState<string>("add");
     const [userList, setUserList] = useState<any[]>([]);
 
     const resetForm: CreateBranchDto = {
@@ -29,7 +29,7 @@ export const BranchState = () => {
         branchDescription: '',
         branchType: '',
         branchStatus: '',
-        managerId: undefined,
+        managerOid: undefined,
     }
     const [formModal, setFormModal] = useState<Record<string, any>>({ ...resetForm });
 

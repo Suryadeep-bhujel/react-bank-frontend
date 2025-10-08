@@ -1,24 +1,26 @@
 import { SharedStatus, AccountType, PersonCaste, Occupation, MaritalStatus, EducationalQualification, ChooseOptions, DocumentType } from "@bank-app-common/enum/SharedEnum";
 import type { FormStructure, SearchInterface, SearchProps } from "@src/shared/SharedInterface"
-import type { BankAccountInterface } from "./useBankAccountState"
+// import type { BankAccountInterface } from "./useBankAccountState"
 import { useEffect, useState } from "react";
-import { searchResetData } from "@src/shared/SharedResetData";
-import { BankAccountService, BranchManagementService, CustomerService, type AddressInfoRequestDto, type CreateBankAccountDto } from "@src/openapi-request";
+// import { searchResetData } from "@src/shared/SharedResetData";
+import { BankAccountService, BranchManagementService, CustomerService, type AccountInfoRequestDto, type AddOnInfoRequestDto, type AddressInfoRequestDto, type ContactInfoRequestDto, type KycInfoRequestDto, type PersonalInfoRequestDto } from "@src/openapi-request";
 import { useLoading } from "@context/LoadingContext";
-import type { CustomerInterface } from "./CustomerState";
+// import type { CustomerInterface } from "./CustomerState";
 import { toast } from "react-toastify";
 import { mapOptionLabel } from "@src/shared/SharedFunctions";
 import { CountryList } from "@bank-app-common/shared-data/country-list"
 import { GenderType, PersonTitle } from "@bank-app-common/enum/SharedEnum";
-import { DateAndTimeService } from "@bank-app-common/service/date-service";
+import type { CustomerInterface } from "./CustomerState";
+import { searchResetData } from "@src/shared/SharedResetData";
+// import { DateAndTimeService } from "@bank-app-common/service/date-service";
 
 
 export const useAddUpdateBankAccountState = () => {
-    const { setIsLoading, isLoading } = useLoading();
+    const { setIsLoading } = useLoading();
     const [customerList, setCustomerList] = useState<CustomerInterface[]>([]);
-    const [formTitle, setFormTitle] = useState("Add Bank Account");
+    // const [formTitle, setFormTitle] = useState("Add Bank Account");
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [search, setSearchParams] = useState<SearchInterface>({ limit: 500 });
+    const [search, setSearchParams] = useState<SearchInterface>({...searchResetData, limit: 500 });
     const [bankBranches, setBankBranchesState] = useState<any[]>([]);
     const [isResidentAddSameAsPmAdd, setResidentAddSameState] = useState<boolean>(false);
 
@@ -29,14 +31,13 @@ export const useAddUpdateBankAccountState = () => {
         page: 1,
     });
 
-    const [bankDetailModel, setBankDetailModel] = useState({
-        branchCode: null,
-        accountType: null,
-        accountNumber: null,
-        status: null,
+    const [bankDetailModel, setBankDetailModel] = useState<AccountInfoRequestDto>({
+        branchCode: '',
+        accountType: "PERSONAL",
+        status: 'ACTIVE',
     });
-    const [countryLabels, setCountryLabels] = useState(
-        CountryList.map(item => {
+    const [countryLabels] = useState(
+        CountryList.map((item: any) => {
             return {
                 label: item?.name,
                 value: item?.code
@@ -45,20 +46,20 @@ export const useAddUpdateBankAccountState = () => {
     )
 
 
-    const [personalDetailModel, setPersonalDetailModel] = useState({
-        firstName: null,
-        middleName: null,
-        lastName: null,
-        guardianName: null,
-        gender: null,
-        dateOfBirth: null,
-        maritalStatus: null,
-        category: null,
-        occupation: null,
-        education: null,
-        nationality: null,
-        countryOfBirth: null,
-        countryOfResidence: null,
+    const [personalDetailModel, setPersonalDetailModel] = useState<PersonalInfoRequestDto>({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        guardianName: '',
+        gender: "UNDISCLOSED",
+        dateOfBirth: "",
+        maritalStatus: "SINGLE",
+        category: "GENERAL",
+        occupation: "EMPLOYED",
+        education: "BACHELORS",
+        nationality: "IN",
+        countryOfBirth: "IN",
+        countryOfResidence: "IN",
     });
     const [permanentAddressModel, setPermanentAddressModel] = useState<AddressInfoRequestDto>({
         addressLine1: '',
@@ -107,30 +108,29 @@ export const useAddUpdateBankAccountState = () => {
         country: ''
     });
 
-    const [communicationModel, setCommunicationModel] = useState({
-        telephone: null,
-        mobileNo: null,
-        email: null,
+    const [communicationModel, setCommunicationModel] = useState<ContactInfoRequestDto>({
+        telephone: '',
+        mobileNo: '',
+        email: '',
     });
 
-    const [kycModel, setKycModel] = useState({
-        kycDocumentProvided: null,
-        nominationRequired: null,
-        introducerName: null,
-        accountNumber: null,
-        panNumber: null,
-        kycDocumentType: null,
-        officialIdNo: null,
-        perAnnumIncome: null,
-        requestedAddOn: null,
+    const [kycModel, setKycModel] = useState<KycInfoRequestDto>({
+        kycDocumentProvided: "NOT_APPLICABLE",
+        nominationRequired: "YES",
+        introducerName: "",
+        panNumber: "",
+        kycDocumentType: "BIRTH_CERTIFICATE",
+        officialIdNo: "",
+        perAnnumIncome: 0,
+        requestedAddOn: "NOT_APPLICABLE",
     });
-    const [addOnDetailModel, setAddOnDetailState] = useState({
-        requestedDebitCard: null,
-        eStatement: null,
-        chequeBook: null,
-        mobileBanking: null,
-        internetBanking: null,
-        creditCard: null,
+    const [addOnDetailModel, setAddOnDetailState] = useState<AddOnInfoRequestDto>({
+        requestedDebitCard: "YES",
+        eStatement: "YES",
+        chequeBook: "YES",
+        mobileBanking: "YES",
+        internetBanking: "YES",
+        creditCard: "YES",
     });
     useEffect(() => {
         setSearchParams(prev => ({
@@ -330,7 +330,7 @@ export const useAddUpdateBankAccountState = () => {
     }
     const submitForm = async () => {
         try {
-            setErrors("")
+            setErrors({})
             setIsLoading(true);
             // console.log("Formbody", formBody)
 
@@ -339,7 +339,7 @@ export const useAddUpdateBankAccountState = () => {
             // formBody[customerOids]
             const response = await BankAccountService.create({
                 requestBody: {
-                    accountInfo: bankDetailModel,
+                    accountInfo: bankDetailModel as AccountInfoRequestDto,
                     personalInfo: personalDetailModel,
                     // personalInfo: {
                     //     ...personalDetailModel,
@@ -366,7 +366,7 @@ export const useAddUpdateBankAccountState = () => {
             }, response)
             toast.success(response.message);
             setIsLoading(false);
-        } catch (error) {
+        } catch (error: any) {
             setIsLoading(false);
             console.log("errorerrorerror", error.body.message)
             toast.error("Failed to create customer. Please try again.");

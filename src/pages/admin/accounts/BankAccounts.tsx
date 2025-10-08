@@ -5,9 +5,9 @@ import DataTableV1 from "@src/pages/shared/DataTableV1";
 const BankAccount: React.FC = () => {
     const {
         bankAccountList,
-        errors,
-        setErrors,
-        isLoading,
+        // errors,
+        // setErrors,
+        // isLoading,
         search,
         handlePageSizeChange,
         handlePageChange,

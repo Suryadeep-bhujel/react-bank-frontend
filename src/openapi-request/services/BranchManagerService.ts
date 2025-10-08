@@ -31,7 +31,6 @@ export class BranchManagerService {
      * @throws ApiError
      */
     public static findAll({
-        requestBody,
         fieldName,
         fieldValue,
         page,
@@ -39,7 +38,6 @@ export class BranchManagerService {
         sortBy,
         sortOrder,
     }: {
-        requestBody: ManagerSearchDto,
         fieldName?: string,
         fieldValue?: string,
         page?: number,
@@ -58,7 +56,6 @@ export class BranchManagerService {
                 'sortBy': sortBy,
                 'sortOrder': sortOrder,
             },
-            body: requestBody,
             mediaType: 'application/json',
         });
     }

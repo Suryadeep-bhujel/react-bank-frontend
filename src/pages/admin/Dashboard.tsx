@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
             <h1 className="text-2xl font-bold text-cyan-900 mb-4">Admin Dashboard</h1>
             <div className="">
                 <div className="text-lg font-semibold text-gray-700 mb-4 flex justify-between">
-                    <LineChart />
+                    {/* <LineChart />  */} {/* Sample Chart  TODO*/}
                     {/* <div className="text-gray-500 justify-end">
                         <ul>
                             <li>

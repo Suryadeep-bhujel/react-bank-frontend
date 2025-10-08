@@ -10,17 +10,17 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
     // "types": ["node"],
 
     /* Linting */
-    "strict": false,
+    "strict": true,
     "noUnusedLocals": false,
     "noImplicitAny": false,
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
     "noUnusedParameters": false,
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
@@ -32,7 +32,7 @@
       "@shared/*" : ["pages/shared/*"],
       "@openapi/*": ["openapi-request/services/*"],
       "@context/*":["context/*"],
-      "@bank-app-common/*" : ["@bank-app-common/*"]
+      "@bank-app-common/*" : ["../@bank-app-common/*"]
     }
   },
   "include": ["src", "@bank-app-common"]
