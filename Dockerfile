@@ -45,7 +45,7 @@ RUN npm ci
 # 2) Now bring source
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-COPY @bank-app-common ./@bank-app-common
+# COPY @bank-app-common ./@bank-app-common
 COPY index.html ./
 COPY src ./src
 COPY public ./public
