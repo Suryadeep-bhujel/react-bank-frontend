@@ -58,7 +58,7 @@ ENV CI=false
 RUN node -v && npm -v && node -p "process.versions" && env | sort
 
 # 4) Build
-RUN npm run build --verbose
+RUN npm run build
 
 # ---------- runtime ----------
 FROM nginx:1.27-alpine AS runtime
