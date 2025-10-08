@@ -2,7 +2,7 @@ import type { ListTableInterface, TableColumnStructure } from "@src/shared/Share
 import React, { useState, useEffect } from "react";
 import Pagination from "@shared/Pagination";
 import SearchWidget from "@src/pages/shared/SearchWidget";
-import { DateAndTimeService, DateFormatType } from "../../../@bank-app-common/service/date-service";
+import { DateAndTimeService, DateFormatType } from "@bank-app-common/service/date-service";
 const ListTable: React.FC<ListTableInterface> = ({
     tableColumns,
     records,
