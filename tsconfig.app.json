@@ -33,5 +33,5 @@
       "@bank-app-common/*" : ["@bank-app-common/*"]
     }
   },
-  "include": ["src", "@bank-app-common/**/*.ts"]
+  "include": ["src", "@bank-app-common"]
 }
