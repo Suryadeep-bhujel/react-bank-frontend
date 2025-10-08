@@ -27,5 +27,4 @@ bank-backend/node_modules
 bank-frontend/node_modules
 bank-backend/.env
 bank-frontend/.env
-package-lock.json
 yarn.lock
