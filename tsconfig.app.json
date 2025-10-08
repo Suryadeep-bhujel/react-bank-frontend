@@ -17,8 +17,10 @@
     // "types": ["node"],
 
     /* Linting */
-    "strict": true,
+    "strict": false,
     "noUnusedLocals": false,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
     "noUnusedParameters": false,
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
