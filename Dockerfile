@@ -29,7 +29,7 @@ FROM base AS dev
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY vite.config.* ./
-COPY @bank-app-common ./@bank-app-common
+# COPY @bank-app-common ./@bank-app-common
 RUN npm ci
 EXPOSE 5173
 CMD ["npm","run","dev","--","--host","0.0.0.0"]
@@ -38,7 +38,7 @@ CMD ["npm","run","dev","--","--host","0.0.0.0"]
 FROM base AS build
 # 1) Install deps with only the files npm needs -> better cache
 COPY package*.json ./
-COPY @bank-app-common/package*.json ./@bank-app-common/
+# COPY @bank-app-common/package*.json ./@bank-app-common/
 RUN ls -la && test -f package-lock.json || (echo "package-lock.json missing" && exit 1)
 RUN npm ci
 
